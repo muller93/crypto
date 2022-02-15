@@ -1,4 +1,4 @@
-export interface ITab {
+export interface IIdName {
   id: number;
   name: string;
 }

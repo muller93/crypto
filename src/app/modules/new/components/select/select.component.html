@@ -1,0 +1,13 @@
+<mat-form-field>
+  <input
+    type="text"
+    placeholder="Pick one"
+    matInput
+    [matAutocomplete]="auto"
+  />
+</mat-form-field>
+<mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onSelectionChange($event)">
+  <mat-option *ngFor="let crypto of cryptos" [value]="crypto">
+    {{ crypto.name }}
+  </mat-option>
+</mat-autocomplete>
