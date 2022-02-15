@@ -10,6 +10,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NewModule } from './modules/new/new.module';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [AppComponent, TabComponent],
@@ -23,6 +24,7 @@ import { NewModule } from './modules/new/new.module';
     MatSelectModule,
     MatAutocompleteModule,
     NewModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent],
