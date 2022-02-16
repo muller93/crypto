@@ -10,10 +10,13 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NewModule } from './modules/new/new.module';
-import {MatIconModule} from '@angular/material/icon';
-
+import { MatIconModule } from '@angular/material/icon';
+import { LoginComponent } from './modules/login/components/login/login.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 @NgModule({
-  declarations: [AppComponent, TabComponent],
+  declarations: [AppComponent, TabComponent, LoginComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -24,7 +27,11 @@ import {MatIconModule} from '@angular/material/icon';
     MatSelectModule,
     MatAutocompleteModule,
     NewModule,
-    MatIconModule
+    MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatFormFieldModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

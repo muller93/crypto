@@ -12,12 +12,12 @@ export class CryptoService {
   }
 
   addTab(newTab: IdName) {
-    const currentTabs: string = JSON.parse(localStorage.getItem('tabs'));
-    const jsonData = JSON.stringify([
+    const currentTabs: IdName[] = JSON.parse(localStorage.getItem('tabs'));
+    const stringifiedTabs = JSON.stringify([
       ...currentTabs,
       { id: currentTabs.length, name: newTab.name },
     ]);
-    localStorage.setItem('tabs', jsonData);
+    localStorage.setItem('tabs', stringifiedTabs);
   }
 
   deleteTab(selectedTabName: string) {

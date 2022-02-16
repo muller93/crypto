@@ -1,2 +1,4 @@
-<app-tab></app-tab>
-
+<app-tab *ngIf="isLoggedIn; else login"></app-tab>
+<ng-template #login>
+  <app-login (setLogin)="isLoggedIn = true"></app-login>
+</ng-template>

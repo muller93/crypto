@@ -1,15 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
+  @Output() setLogin = new EventEmitter<void>();
 
-  constructor() { }
+  hide = true;
+  showPasswordError: boolean;
 
-  ngOnInit(): void {
+  userNameControl = new FormControl();
+  passwordControl = new FormControl();
+  form = new FormGroup({
+    userName: this.userNameControl,
+    password: this.passwordControl,
+  });
+
+  login() {
+    const users = JSON.parse(localStorage.getItem('users'));
+    const loginUser = users.find(
+      (user) => user.userName === this.userNameControl.value
+    );
+    if (loginUser) {
+      if (loginUser.password === this.passwordControl.value) {
+        this.setLogin.emit();
+      } else {
+        this.showPasswordError = true;
+      }
+    } else {
+      const stringifiedUsers = JSON.stringify(
+        users ? [...users, this.form.value] : [this.form.value]
+      );
+      localStorage.setItem('users', stringifiedUsers);
+      this.setLogin.emit();
+    }
   }
-
 }

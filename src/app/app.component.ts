@@ -7,9 +7,11 @@ import { tabs } from './mock/tabs';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  isLoggedIn = false;
+
   ngOnInit(): void {
     const jsonData = JSON.stringify(tabs);
     localStorage.setItem('tabs', jsonData);
-    console.log('get', JSON.parse(localStorage.getItem('tabs')));
+    this.isLoggedIn = localStorage.getItem('loginData') !== null;
   }
 }
