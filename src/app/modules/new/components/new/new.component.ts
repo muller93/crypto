@@ -7,7 +7,7 @@ import { tabs } from 'src/app/mock/tabs';
 @Component({
   selector: 'app-new',
   templateUrl: './new.component.html',
-  styleUrls: ['./new.component.css'],
+  styleUrls: ['./new.component.scss'],
 })
 export class NewComponent {
   cryptos: IIdName[] = cryptos.filter((x) => !tabs.some((y) => y.id === x.id));

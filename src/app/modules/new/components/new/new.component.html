@@ -1,7 +1,7 @@
 <div mat-dialog-content>
   <app-select [cryptos]="cryptos" (selectedCrypto)="handleSelectedCrypto($event)"></app-select>
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions class="d-flex justify-content-end">
   <button mat-raised-button color="primary" (click)="save()">Add</button>
   <button mat-raised-button color="accent" (click)="cancel()">Cancel</button>
 </div>

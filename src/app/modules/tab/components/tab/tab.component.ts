@@ -16,7 +16,7 @@ import { addTab, deleteTab } from 'src/app/mock/tabs';
 @Component({
   selector: 'app-tab',
   templateUrl: './tab.component.html',
-  styleUrls: ['./tab.component.css'],
+  styleUrls: ['./tab.component.scss'],
   providers: [CryptoService],
 })
 export class TabComponent implements OnInit, AfterViewInit {
