@@ -1,6 +1,6 @@
-import { IIdName } from '../model/id-name.inferface';
+import { IdName } from '../model/id-name.inferface';
 
-export const cryptos: IIdName[] = [
+export const cryptos: IdName[] = [
   { id: 0, name: 'Btc' },
   { id: 1, name: 'Ada' },
   { id: 2, name: 'Sol' },

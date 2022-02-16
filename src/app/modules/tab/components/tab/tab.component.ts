@@ -1,16 +1,10 @@
-import {
-  AfterViewInit,
-  Component,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { switchMap, catchError, of, BehaviorSubject } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewComponent } from 'src/app/modules/new/components/new/new.component';
-import { IIdName } from 'src/app/model/id-name.inferface';
-import { addTab, deleteTab } from 'src/app/mock/tabs';
+import { IdName } from 'src/app/model/id-name.inferface';
 
 @UntilDestroy()
 @Component({
@@ -21,7 +15,7 @@ import { addTab, deleteTab } from 'src/app/mock/tabs';
 })
 export class TabComponent implements OnInit, AfterViewInit {
   error: string;
-  tabs: IIdName[];
+  tabs: IdName[];
   selectedTabName: string;
   @ViewChild('tab') tab;
 
@@ -37,7 +31,7 @@ export class TabComponent implements OnInit, AfterViewInit {
   }
 
   public tabChanged(tabChangeEvent): void {
-    this.selectedTabName = tabChangeEvent.tab.textLabel;
+    this.selectedTabName = tabChangeEvent.tab.textLabel ?? null;
   }
 
   ngOnInit(): void {
@@ -47,25 +41,28 @@ export class TabComponent implements OnInit, AfterViewInit {
           this._cryptoService.getTabs().pipe(
             catchError((err) => {
               this.error = err;
-              return of<IIdName[]>([]);
+              return of<IdName[]>([]);
             })
           )
         ),
         untilDestroyed(this)
       )
-      .subscribe((tabs: IIdName[]) => (this.tabs = tabs));
+      .subscribe((tabs: IdName[]) => (this.tabs = tabs));
   }
 
   addNew() {
     const dialogRef = this._dialog.open(NewComponent);
-    dialogRef.afterClosed().subscribe((result) => {
-      addTab(result.data);
-      this._refreshList$.next();
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe((result) => {
+        this._cryptoService.addTab(result.data);
+        this._refreshList$.next();
+      });
   }
 
-  deleteCrypto() {
-    deleteTab(this.selectedTabName);
+  deleteTab() {
+    this._cryptoService.deleteTab(this.selectedTabName);
     this._refreshList$.next();
   }
 }

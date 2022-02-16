@@ -1,17 +1,32 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { tabs } from '../mock/tabs';
-import { IIdName } from '../model/id-name.inferface';
+import { IdName } from '../model/id-name.inferface';
 
 @Injectable()
 export class CryptoService {
   constructor(private _http: HttpClient) {}
 
-  getTabs(): Observable<IIdName[]> {
-    return of(tabs);
+  getTabs(): Observable<IdName[]> {
+    return of(JSON.parse(localStorage.getItem('tabs')));
   }
 
-  /*   getCrypto(id: string): Observable<ICrypto> {}
-   */
+  addTab(newTab: IdName) {
+    const currentTabs: string = JSON.parse(localStorage.getItem('tabs'));
+    const jsonData = JSON.stringify([
+      ...currentTabs,
+      { id: currentTabs.length, name: newTab.name },
+    ]);
+    localStorage.setItem('tabs', jsonData);
+  }
+
+  deleteTab(selectedTabName: string) {
+    const currentTabs: IdName[] = JSON.parse(localStorage.getItem('tabs'));
+    localStorage.setItem(
+      'tabs',
+      JSON.stringify(
+        currentTabs.filter((value) => value.name !== selectedTabName)
+      )
+    );
+  }
 }
