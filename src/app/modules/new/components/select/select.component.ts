@@ -18,6 +18,7 @@ export class SelectComponent {
   }
 
   onSelectionChange(event: IIdName) {
+    console.log('event', event)
     this.selectedCrypto.emit(event);
   }
 }

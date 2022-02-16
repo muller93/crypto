@@ -1,11 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { switchMap, catchError, of, BehaviorSubject } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewComponent } from 'src/app/modules/new/components/new/new.component';
 import { IIdName } from 'src/app/model/id-name.inferface';
-import { setTabs, tabs } from 'src/app/mock/tabs';
+import { addTab, deleteTab } from 'src/app/mock/tabs';
 
 @UntilDestroy()
 @Component({
@@ -14,9 +19,11 @@ import { setTabs, tabs } from 'src/app/mock/tabs';
   styleUrls: ['./tab.component.css'],
   providers: [CryptoService],
 })
-export class TabComponent implements OnInit {
+export class TabComponent implements OnInit, AfterViewInit {
   error: string;
   tabs: IIdName[];
+  selectedTabName: string;
+  @ViewChild('tab') tab;
 
   private _refreshList$ = new BehaviorSubject<void>(null);
 
@@ -24,6 +31,14 @@ export class TabComponent implements OnInit {
     private _cryptoService: CryptoService,
     private _dialog: MatDialog
   ) {}
+
+  ngAfterViewInit() {
+    this.selectedTabName = this.tab.textLabel;
+  }
+
+  public tabChanged(tabChangeEvent): void {
+    this.selectedTabName = tabChangeEvent.tab.textLabel;
+  }
 
   ngOnInit(): void {
     this._refreshList$
@@ -43,10 +58,14 @@ export class TabComponent implements OnInit {
 
   addNew() {
     const dialogRef = this._dialog.open(NewComponent);
-
     dialogRef.afterClosed().subscribe((result) => {
-      setTabs(result.data);
+      addTab(result.data);
       this._refreshList$.next();
     });
+  }
+
+  deleteCrypto() {
+    deleteTab(this.selectedTabName);
+    this._refreshList$.next();
   }
 }

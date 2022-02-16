@@ -8,8 +8,11 @@ export let tabs: IIdName[] = [
   { id: 4, name: 'One' },
 ];
 
-export function setTabs(newTab: IIdName) {
-  console.log('this.tabs', tabs)
+export function addTab(newTab: IIdName) {
+  tabs = [...tabs, { id: tabs.length, name: newTab.name }];
+}
 
-  tabs = [...tabs, newTab];
+export function deleteTab(selectedTabName: string) {
+  console.log('selectedTabName', selectedTabName)
+  tabs = tabs.filter(value => value.name !== selectedTabName);
 }
