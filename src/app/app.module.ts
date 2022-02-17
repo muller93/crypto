@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TabModule } from './modules/tab/tab.module';
 import { TabComponent } from './modules/tab/components/tab/tab.component';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -33,7 +33,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatInputModule,
     MatFormFieldModule,
   ],
-  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

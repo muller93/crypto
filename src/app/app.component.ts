@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
     const jsonData = JSON.stringify(tabs);
     localStorage.setItem('tabs', jsonData);
     this.isLoggedIn = localStorage.getItem('loginData') !== null;
+
   }
 
   setLogin(event: boolean) {

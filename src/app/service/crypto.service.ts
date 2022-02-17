@@ -1,11 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { CryptoDetails } from '../model/crypto-details.interface';
 import { IdName } from '../model/id-name.inferface';
 
 @Injectable()
 export class CryptoService {
+  private _apiKey = 'B282AA63-91E4-417B-8A8F-44C2EE8F075E';
+  private _apiUrl = 'https://rest.coinapi.io/v1';
+
   constructor(private _http: HttpClient) {}
+
+  getAllCrypto(): Observable<CryptoDetails> {
+    return this._http.get<CryptoDetails>(`${this._apiUrl}/assets`, {
+      params: { apikey: this._apiKey },
+    });
+  }
 
   getTabs(): Observable<IdName[]> {
     return of(JSON.parse(localStorage.getItem('tabs')));
