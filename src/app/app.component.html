@@ -1,4 +1,5 @@
-<app-tab *ngIf="isLoggedIn; else login"></app-tab>
+<app-tab *ngIf="isLoggedIn; else login" (setLogin)="setLogin($event)"></app-tab>
+
 <ng-template #login>
-  <app-login (setLogin)="isLoggedIn = true"></app-login>
+  <app-login (setLogin)="setLogin($event)"></app-login>
 </ng-template>

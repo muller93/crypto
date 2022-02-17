@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { switchMap, catchError, of, BehaviorSubject } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CryptoService } from 'src/app/service/crypto.service';
@@ -18,6 +18,7 @@ export class TabComponent implements OnInit, AfterViewInit {
   tabs: IdName[];
   selectedTabName: string;
   @ViewChild('tab') tab;
+  @Output() setLogin = new EventEmitter<boolean>();
 
   private _refreshList$ = new BehaviorSubject<void>(null);
 

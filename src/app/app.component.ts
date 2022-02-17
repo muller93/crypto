@@ -14,4 +14,8 @@ export class AppComponent implements OnInit {
     localStorage.setItem('tabs', jsonData);
     this.isLoggedIn = localStorage.getItem('loginData') !== null;
   }
+
+  setLogin(event: boolean) {
+    this.isLoggedIn = event;
+  }
 }

@@ -7,7 +7,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  @Output() setLogin = new EventEmitter<void>();
+  @Output() setLogin = new EventEmitter<boolean>();
 
   hide = true;
   showPasswordError: boolean;
@@ -26,7 +26,7 @@ export class LoginComponent {
     );
     if (loginUser) {
       if (loginUser.password === this.passwordControl.value) {
-        this.setLogin.emit();
+        this.setLogin.emit(true);
       } else {
         this.showPasswordError = true;
       }
@@ -35,7 +35,7 @@ export class LoginComponent {
         users ? [...users, this.form.value] : [this.form.value]
       );
       localStorage.setItem('users', stringifiedUsers);
-      this.setLogin.emit();
+      this.setLogin.emit(true);
     }
   }
 }
