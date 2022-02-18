@@ -6,12 +6,13 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { switchMap, catchError, of, BehaviorSubject, tap } from 'rxjs';
+import { switchMap, catchError, of, BehaviorSubject, tap, filter } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewComponent } from 'src/app/modules/new/components/new/new.component';
 import { Tab } from 'src/app/model/tab.inferface';
+import { CryptoDetails } from 'src/app/model/crypto-details.interface';
 
 @UntilDestroy()
 @Component({
@@ -27,8 +28,9 @@ export class TabComponent implements OnInit, AfterViewInit {
 
   error: string;
   tabs: Tab[];
-  selectedTabName: string;
+  selectedTabName$ = new BehaviorSubject<string>(null);
   loggedInUserName: string;
+  cryptoDetail: CryptoDetails;
 
   constructor(
     private _cryptoService: CryptoService,
@@ -36,12 +38,11 @@ export class TabComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    console.log(' this.tab', this.tab);
-    this.selectedTabName = this.tab?.textLabel;
+    this.selectedTabName$.next(this.tab?.textLabel);
   }
 
   public tabChanged(tabChangeEvent): void {
-    this.selectedTabName = tabChangeEvent?.tab.textLabel ?? null;
+    this.selectedTabName$.next(tabChangeEvent?.tab.textLabel ?? null);
   }
 
   ngOnInit(): void {
@@ -60,9 +61,18 @@ export class TabComponent implements OnInit, AfterViewInit {
         ),
         untilDestroyed(this)
       )
-      .subscribe((tabs: Tab[]) => {
-        console.log('tab', tabs);
-        this.tabs = tabs;
+      .subscribe((tabs: Tab[]) => (this.tabs = tabs));
+
+    this.selectedTabName$
+      .pipe(
+        filter((x) => x !== null),
+        untilDestroyed(this)
+      )
+      .subscribe((x) => {
+        this._cryptoService
+          .getCryptoDetail(this.tabs?.find((tab) => tab.name === x).asset_id)
+          .pipe(untilDestroyed(this))
+          .subscribe((cryptoDetail) => (this.cryptoDetail = cryptoDetail));
       });
   }
 
@@ -78,8 +88,7 @@ export class TabComponent implements OnInit, AfterViewInit {
   }
 
   deleteTab() {
-    console.log('selectedf', this.selectedTabName);
-    this._cryptoService.deleteTab(this.selectedTabName);
+    this._cryptoService.deleteTab(this.selectedTabName$.value);
     this._refreshList$.next();
   }
 }

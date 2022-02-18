@@ -23,20 +23,44 @@ export class CryptoService {
     return of(JSON.parse(localStorage.getItem('tabs')));
   }
 
+  getCryptoDetail(assetId: string): Observable<CryptoDetails> {
+    /*     return this._http.get<CryptoDetails[]>(
+      `${this._apiUrl}/assets/${assetId}`,
+      {
+        params: { apikey: this._apiKey },
+      }
+    ); */
+    return of(
+      JSON.parse(localStorage.getItem('tabs')).filter(
+        (tab) => tab.asset_id === assetId
+      )
+    );
+  }
+
   getLoggedInUser() {
     return JSON.parse(localStorage.getItem('loggedInUser'));
   }
 
   addTab(newTab: Tab) {
     const currentTabs: Tab[] = JSON.parse(localStorage.getItem('tabs'));
-    const stringifiedTabs = JSON.stringify([
-      ...currentTabs,
-      {
-        id: currentTabs.length,
-        name: newTab.name,
-        userName: this.getLoggedInUser().userName,
-      },
-    ]);
+    const stringifiedTabs = JSON.stringify(
+      currentTabs
+        ? [
+            ...currentTabs,
+            {
+              asset_id: newTab.asset_id,
+              name: newTab.name,
+              userName: this.getLoggedInUser().userName,
+            },
+          ]
+        : [
+            {
+              asset_id: newTab.asset_id,
+              name: newTab.name,
+              userName: this.getLoggedInUser().userName,
+            },
+          ]
+    );
     localStorage.setItem('tabs', stringifiedTabs);
   }
 
