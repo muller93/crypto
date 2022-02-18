@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewComponent } from 'src/app/modules/new/components/new/new.component';
 import { Tab } from 'src/app/model/tab.inferface';
 import { CryptoDetails } from 'src/app/model/crypto-details.interface';
+import { isPresent } from 'src/app/utils/is-present';
 
 @UntilDestroy()
 @Component({
@@ -42,7 +43,7 @@ export class TabComponent implements OnInit, AfterViewInit {
   }
 
   public tabChanged(tabChangeEvent): void {
-    this.selectedTabName$.next(tabChangeEvent?.tab.textLabel ?? null);
+    this.selectedTabName$.next(tabChangeEvent?.tab.textLabel);
   }
 
   ngOnInit(): void {
@@ -65,7 +66,7 @@ export class TabComponent implements OnInit, AfterViewInit {
 
     this.selectedTabName$
       .pipe(
-        filter((x) => x !== null),
+        filter((x) => isPresent(x) && x !== ''),
         untilDestroyed(this)
       )
       .subscribe((x) => {
