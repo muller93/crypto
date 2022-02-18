@@ -21,11 +21,12 @@ export class LoginComponent {
 
   login() {
     const users = JSON.parse(localStorage.getItem('users'));
-    const loginUser = users.find(
+    const loginUser = users?.find(
       (user) => user.userName === this.userNameControl.value
     );
     if (loginUser) {
       if (loginUser.password === this.passwordControl.value) {
+        localStorage.setItem('loggedInUser', JSON.stringify(loginUser));
         this.setLogin.emit(true);
       } else {
         this.showPasswordError = true;
@@ -35,6 +36,7 @@ export class LoginComponent {
         users ? [...users, this.form.value] : [this.form.value]
       );
       localStorage.setItem('users', stringifiedUsers);
+      localStorage.setItem('loggedInUser', JSON.stringify(this.form.value));
       this.setLogin.emit(true);
     }
   }

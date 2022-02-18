@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     const jsonData = JSON.stringify(tabs);
-    localStorage.setItem('tabs', jsonData);
+   // localStorage.setItem('tabs', jsonData);
     this.isLoggedIn = localStorage.getItem('loginData') !== null;
 
   }

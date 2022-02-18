@@ -1,7 +1,11 @@
 <div class="d-flex justify-content-between">
   <mat-tab-group (selectedTabChange)="tabChanged($event)">
-    <ng-container *ngFor="let tab of tabs">
-      <mat-tab #tab label="{{ tab.name }}"></mat-tab>
+    <ng-container *ngFor="let tabData of tabs">
+      <mat-tab
+        *ngIf="loggedInUserName === tabData?.userName"
+        #tab
+        label="{{ tabData?.name }}"
+      ></mat-tab>
     </ng-container>
     <mat-tab>
       <ng-template mat-tab-label>

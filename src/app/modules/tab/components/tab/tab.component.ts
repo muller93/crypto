@@ -6,12 +6,12 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { switchMap, catchError, of, BehaviorSubject } from 'rxjs';
+import { switchMap, catchError, of, BehaviorSubject, tap } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewComponent } from 'src/app/modules/new/components/new/new.component';
-import { CryptoDetails } from 'src/app/model/crypto-details.interface';
+import { Tab } from 'src/app/model/tab.inferface';
 
 @UntilDestroy()
 @Component({
@@ -21,13 +21,14 @@ import { CryptoDetails } from 'src/app/model/crypto-details.interface';
   providers: [CryptoService],
 })
 export class TabComponent implements OnInit, AfterViewInit {
-  error: string;
-  tabs: CryptoDetails[];
-  selectedTabName: string;
   @ViewChild('tab') tab;
   @Output() setLogin = new EventEmitter<boolean>();
-
   private _refreshList$ = new BehaviorSubject<void>(null);
+
+  error: string;
+  tabs: Tab[];
+  selectedTabName: string;
+  loggedInUserName: string;
 
   constructor(
     private _cryptoService: CryptoService,
@@ -35,27 +36,34 @@ export class TabComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    this.selectedTabName = this.tab.textLabel;
+    console.log(' this.tab', this.tab);
+    this.selectedTabName = this.tab?.textLabel;
   }
 
   public tabChanged(tabChangeEvent): void {
-    this.selectedTabName = tabChangeEvent.tab.textLabel ?? null;
+    this.selectedTabName = tabChangeEvent?.tab.textLabel ?? null;
   }
 
   ngOnInit(): void {
+    this.loggedInUserName = JSON.parse(
+      localStorage.getItem('loggedInUser')
+    ).userName;
     this._refreshList$
       .pipe(
         switchMap(() =>
           this._cryptoService.getTabs().pipe(
             catchError((err) => {
               this.error = err;
-              return of<CryptoDetails[]>([]);
+              return of<Tab[]>([]);
             })
           )
         ),
         untilDestroyed(this)
       )
-      .subscribe((tabs: CryptoDetails[]) => (this.tabs = tabs));
+      .subscribe((tabs: Tab[]) => {
+        console.log('tab', tabs);
+        this.tabs = tabs;
+      });
   }
 
   addNew() {
@@ -70,6 +78,7 @@ export class TabComponent implements OnInit, AfterViewInit {
   }
 
   deleteTab() {
+    console.log('selectedf', this.selectedTabName);
     this._cryptoService.deleteTab(this.selectedTabName);
     this._refreshList$.next();
   }
