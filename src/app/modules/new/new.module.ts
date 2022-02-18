@@ -9,9 +9,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
-  declarations: [NewComponent, SelectComponent],
+  declarations: [NewComponent, SelectComponent, ],
   imports: [
     CommonModule,
     MatSelectModule,
@@ -22,7 +23,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatProgressSpinnerModule
   ],
 })
 export class NewModule {}

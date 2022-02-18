@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { IdName } from 'src/app/model/id-name.inferface';
 import { MatDialogRef } from '@angular/material/dialog';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { cryptos } from 'src/app/mock/cryptos';
+import { IdName } from 'src/app/model/id-name.inferface';
+import { forkJoin } from 'rxjs';
+import { CryptoDetails } from 'src/app/model/crypto-details.interface';
 
 @UntilDestroy()
 @Component({
@@ -13,8 +14,8 @@ import { cryptos } from 'src/app/mock/cryptos';
   providers: [CryptoService],
 })
 export class NewComponent implements OnInit {
-  cryptos: IdName[] = [];
-  selectedCrypto: IdName;
+  cryptos: CryptoDetails[];
+  selectedCrypto: CryptoDetails;
 
   constructor(
     public dialogRef: MatDialogRef<NewComponent>,
@@ -22,15 +23,19 @@ export class NewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this._cryptoService
-      .getTabs()
+    forkJoin([
+      this._cryptoService.getAllCrypto(),
+      this._cryptoService.getTabs(),
+    ])
       .pipe(untilDestroyed(this))
-      .subscribe(
-        (tabs) =>
-          (this.cryptos = cryptos
-            .filter((x) => !tabs.some((y) => y.name === x.name))
-            .sort((a, b) => a.name.localeCompare(b.name)))
-      );
+      .subscribe(([cryptos, tabs]) => {
+        this.cryptos = cryptos
+          .filter(
+            (x) =>
+              !tabs.some((y) => y.name === x.name) && x.type_is_crypto === 1
+          )
+          .sort((a, b) => a.name.localeCompare(b.name));
+      });
   }
 
   save() {

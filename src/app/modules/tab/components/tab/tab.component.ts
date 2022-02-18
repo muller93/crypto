@@ -1,10 +1,17 @@
-import { AfterViewInit, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { switchMap, catchError, of, BehaviorSubject } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewComponent } from 'src/app/modules/new/components/new/new.component';
-import { IdName } from 'src/app/model/id-name.inferface';
+import { CryptoDetails } from 'src/app/model/crypto-details.interface';
 
 @UntilDestroy()
 @Component({
@@ -15,7 +22,7 @@ import { IdName } from 'src/app/model/id-name.inferface';
 })
 export class TabComponent implements OnInit, AfterViewInit {
   error: string;
-  tabs: IdName[];
+  tabs: CryptoDetails[];
   selectedTabName: string;
   @ViewChild('tab') tab;
   @Output() setLogin = new EventEmitter<boolean>();
@@ -42,13 +49,13 @@ export class TabComponent implements OnInit, AfterViewInit {
           this._cryptoService.getTabs().pipe(
             catchError((err) => {
               this.error = err;
-              return of<IdName[]>([]);
+              return of<CryptoDetails[]>([]);
             })
           )
         ),
         untilDestroyed(this)
       )
-      .subscribe((tabs: IdName[]) => (this.tabs = tabs));
+      .subscribe((tabs: CryptoDetails[]) => (this.tabs = tabs));
   }
 
   addNew() {
@@ -57,7 +64,7 @@ export class TabComponent implements OnInit, AfterViewInit {
       .afterClosed()
       .pipe(untilDestroyed(this))
       .subscribe((result) => {
-        this._cryptoService.addTab(result.data);
+        if (result) this._cryptoService.addTab(result.data);
         this._refreshList$.next();
       });
   }

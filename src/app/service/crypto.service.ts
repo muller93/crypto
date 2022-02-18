@@ -11,13 +11,13 @@ export class CryptoService {
 
   constructor(private _http: HttpClient) {}
 
-  getAllCrypto(): Observable<CryptoDetails> {
-    return this._http.get<CryptoDetails>(`${this._apiUrl}/assets`, {
+  getAllCrypto(): Observable<CryptoDetails[]> {
+    return this._http.get<CryptoDetails[]>(`${this._apiUrl}/assets`, {
       params: { apikey: this._apiKey },
     });
   }
 
-  getTabs(): Observable<IdName[]> {
+  getTabs(): Observable<CryptoDetails[]> {
     return of(JSON.parse(localStorage.getItem('tabs')));
   }
 
