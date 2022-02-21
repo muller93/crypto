@@ -1,0 +1,12 @@
+1 {{ selectedTabName }} = {{ usdPrice }} USD
+<mat-form-field class="w-100 mt-4">
+  <input type="number" placeholder="USD" matInput [formControl]="usdControl" />
+</mat-form-field>
+<mat-form-field class="w-100">
+  <input
+    type="number"
+    placeholder="{{ selectedTabName }}"
+    matInput
+    [formControl]="cryptoControl"
+  />
+</mat-form-field>

@@ -14,6 +14,7 @@ import { NewComponent } from 'src/app/modules/new/components/new/new.component';
 import { Tab } from 'src/app/model/tab.inferface';
 import { isPresent } from 'src/app/utils/is-present';
 import { Chart } from 'src/app/model/chart.interface';
+import { CryptoDetail } from 'src/app/model/crypto-details.interface';
 
 @UntilDestroy()
 @Component({
@@ -30,8 +31,11 @@ export class TabComponent implements OnInit, AfterViewInit {
   error: string;
   tabs: Tab[];
   selectedTabName$ = new BehaviorSubject<string>(null);
+  selectedTabIndex = 0;
   loggedInUserName: string;
-  cryptoDetail: Chart[];
+  cryptoChart: Chart[];
+  cryptoDetails: CryptoDetail[];
+  selectedTabUsdPrice: number;
 
   constructor(
     private _cryptoService: CryptoService,
@@ -42,8 +46,11 @@ export class TabComponent implements OnInit, AfterViewInit {
     this.selectedTabName$.next(this.tab?.textLabel);
   }
 
-  public tabChanged(tabChangeEvent): void {
-   this.selectedTabName$.next(tabChangeEvent?.tab.textLabel);
+  tabChanged(tabChangeEvent): void {
+    this.selectedTabName$.next(tabChangeEvent?.tab.textLabel);
+    this.selectedTabUsdPrice = this.cryptoDetails.find(
+      (x) => x.asset_id === this.selectedTabName$.value
+    ).price_usd;
   }
 
   ngOnInit(): void {
@@ -62,7 +69,23 @@ export class TabComponent implements OnInit, AfterViewInit {
         ),
         untilDestroyed(this)
       )
-      .subscribe((tabs: Tab[]) => (this.tabs = tabs));
+      .subscribe((tabs) => (this.tabs = tabs as Tab[]));
+
+    this._cryptoService
+      .getCryptoDetails(this.tabs?.map((tab) => tab.asset_id))
+      .pipe(
+        catchError((err) => {
+          this.error = err;
+          return of<Tab[]>([]);
+        }),
+        untilDestroyed(this)
+      )
+      .subscribe((cryptoDetails) => {
+        this.cryptoDetails = cryptoDetails as CryptoDetail[];
+        this.selectedTabUsdPrice = this.cryptoDetails.find(
+          (x) => x.asset_id === this.selectedTabName$.value
+        ).price_usd;
+      });
 
     this.selectedTabName$
       .pipe(
@@ -73,9 +96,8 @@ export class TabComponent implements OnInit, AfterViewInit {
         this._cryptoService
           .getCryptoChart(tabName)
           .pipe(untilDestroyed(this))
-          .subscribe((cryptoDetail) => {
-            console.log('crdet', cryptoDetail);
-            this.cryptoDetail = cryptoDetail.map((detail) => ({
+          .subscribe((cryptoChart) => {
+            this.cryptoChart = cryptoChart.map((detail) => ({
               name: new Date(detail.time_period_end),
               value: detail.price_close,
             }));
@@ -97,5 +119,6 @@ export class TabComponent implements OnInit, AfterViewInit {
   deleteTab() {
     this._cryptoService.deleteTab(this.selectedTabName$.value);
     this._refreshList$.next();
+    this.selectedTabName$.next(null);
   }
 }

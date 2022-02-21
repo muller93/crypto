@@ -7,17 +7,13 @@ import { Chart } from 'src/app/model/chart.interface';
   styleUrls: ['./chart.component.scss'],
 })
 export class ChartComponent {
-  @Input() set setCryptoDetail(value: Chart) {
-    this.cryptoDetail = value;
-    console.log('value', value)
+  @Input() set setCryptoChart(value: Chart) {
+    this.cryptoChart = value;
   }
   @Input() selectedTabName: string;
-  cryptoDetail: Chart;
+  cryptoChart: Chart;
 
-  single: any[];
-  multi: any[];
-
-  view: any[] = [700, 400];
+  view: number[] = [700, 400];
 
   // options
   showXAxis = true;

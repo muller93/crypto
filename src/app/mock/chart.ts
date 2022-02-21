@@ -26,5 +26,5 @@ export const chartData = [
   {
     price_close: 46540.3,
     time_period_end: new Date('2022-02-20T00:00:00.0000000Z'),
-  }
+  },
 ];

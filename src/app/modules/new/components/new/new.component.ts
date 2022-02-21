@@ -34,13 +34,6 @@ export class NewComponent implements OnInit {
       });
   }
 
-  /*   (!tabs.some((y) => y.name === x.name) || TODO később megnézni
-                tabs.some(
-                  (y) =>
-                    y.userName !==
-                    this._cryptoService.getLoggedInUser().userName
-                )) && */
-
   save() {
     this.dialogRef.close({ data: this.selectedCrypto });
   }

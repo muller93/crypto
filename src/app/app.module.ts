@@ -17,8 +17,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ChartComponent } from './modules/chart/components/chart/chart.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ExchangeComponent } from './modules/exchange/components/exchange/exchange.component';
 @NgModule({
-  declarations: [AppComponent, TabComponent, LoginComponent, ChartComponent],
+  declarations: [
+    AppComponent,
+    TabComponent,
+    LoginComponent,
+    ChartComponent,
+    ExchangeComponent,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,

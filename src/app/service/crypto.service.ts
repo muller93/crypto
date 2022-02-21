@@ -9,7 +9,8 @@ import { convertDateToString } from '../utils/date-ot-string';
 
 @Injectable()
 export class CryptoService {
-  private _apiKey = 'B282AA63-91E4-417B-8A8F-44C2EE8F075E';
+  // private _apiKey = 'B282AA63-91E4-417B-8A8F-44C2EE8F075E';
+  private _apiKey = 'D04B1E7E-28D2-4762-903B-39410A5AC784';
   private _apiUrl = 'https://rest.coinapi.io/v1';
 
   constructor(private _http: HttpClient) {}
@@ -25,9 +26,9 @@ export class CryptoService {
     return of(JSON.parse(localStorage.getItem('tabs')));
   }
 
-  getCryptoDetail(assetId: string): Observable<CryptoDetail[]> {
-    return this._http.get<CryptoDetail[]>(`${this._apiUrl}/assets/${assetId}`, {
-      params: { apikey: this._apiKey },
+  getCryptoDetails(assetIds: string[]): Observable<CryptoDetail[]> {
+    return this._http.get<CryptoDetail[]>(`${this._apiUrl}/assets/`, {
+      params: { apikey: this._apiKey, filter_asset_id: assetIds.join() },
     });
     /* return of(
       JSON.parse(localStorage.getItem('tabs')).filter(
@@ -85,7 +86,6 @@ export class CryptoService {
 
   deleteTab(selectedTabName: string) {
     const currentTabs: Tab[] = JSON.parse(localStorage.getItem('tabs'));
-    console.log('curr', currentTabs);
     localStorage.setItem(
       'tabs',
       JSON.stringify(
