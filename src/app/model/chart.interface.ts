@@ -1,4 +1,4 @@
 export interface Chart {
-  name: number;
-  value: Date;
+  name: Date;
+  value: number;
 }

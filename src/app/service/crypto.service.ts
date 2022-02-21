@@ -38,7 +38,7 @@ export class CryptoService {
 
   getCryptoChart(cryptoName: string): Observable<any> {
     return of(chartData);
-    /*  const today = new Date();
+    /* const today = new Date();
     const from = new Date(
       today.getFullYear(),
       today.getMonth(),
