@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { CryptoDetails } from 'src/app/model/crypto-details.interface';
+import { CryptoDetail } from 'src/app/model/crypto-details.interface';
 
 @Component({
   selector: 'app-select',
@@ -8,16 +8,16 @@ import { CryptoDetails } from 'src/app/model/crypto-details.interface';
   styleUrls: ['./select.component.scss'],
 })
 export class SelectComponent {
-  @Output() selectedCrypto = new EventEmitter<CryptoDetails>();
-  @Input() cryptos: CryptoDetails[];
+  @Output() selectedCrypto = new EventEmitter<CryptoDetail>();
+  @Input() cryptos: CryptoDetail[];
 
   cryptoControl = new FormControl();
 
-  displayFn(crypto: CryptoDetails): string {
+  displayFn(crypto: CryptoDetail): string {
     return crypto && crypto.name ? crypto.name : '';
   }
 
-  onSelectionChange(event: CryptoDetails) {
+  onSelectionChange(event: CryptoDetail) {
     this.selectedCrypto.emit(event);
   }
 }

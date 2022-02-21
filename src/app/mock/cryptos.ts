@@ -1,6 +1,6 @@
-import { CryptoDetails } from "../model/crypto-details.interface";
+import { CryptoDetail } from "../model/crypto-details.interface";
 
-export const cryptos: CryptoDetails[] = [
+export const cryptos: CryptoDetail[] = [
   {
     "asset_id": "BTC",
     "name": "Bitcoin",

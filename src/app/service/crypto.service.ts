@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { chartData } from '../mock/chart';
 import { cryptos } from '../mock/cryptos';
-import { CryptoDetails } from '../model/crypto-details.interface';
+import { CryptoDetail } from '../model/crypto-details.interface';
 import { Tab } from '../model/tab.inferface';
+import { convertDateToString } from '../utils/date-ot-string';
 
 @Injectable()
 export class CryptoService {
@@ -12,29 +14,46 @@ export class CryptoService {
 
   constructor(private _http: HttpClient) {}
 
-  getAllCrypto(): Observable<CryptoDetails[]> {
+  getAllCrypto(): Observable<CryptoDetail[]> {
     return of(cryptos);
-    /*   return this._http.get<CryptoDetails[]>(`${this._apiUrl}/assets`, {
+    /*   return this._http.get<CryptoDetail[]>(`${this._apiUrl}/assets`, {
       params: { apikey: this._apiKey },
     }); */
   }
 
-  getTabs(): Observable<CryptoDetails[]> {
+  getTabs(): Observable<CryptoDetail[]> {
     return of(JSON.parse(localStorage.getItem('tabs')));
   }
 
-  getCryptoDetail(assetId: string): Observable<CryptoDetails> {
-    /*     return this._http.get<CryptoDetails[]>(
-      `${this._apiUrl}/assets/${assetId}`,
+  getCryptoDetail(assetId: string): Observable<CryptoDetail[]> {
+    return this._http.get<CryptoDetail[]>(`${this._apiUrl}/assets/${assetId}`, {
+      params: { apikey: this._apiKey },
+    });
+    /* return of(
+      JSON.parse(localStorage.getItem('tabs')).filter(
+        (tab) => tab.asset_id === assetId
+      )
+    ); */
+  }
+
+  getCryptoChart(cryptoName: string): Observable<any> {
+    return of(chartData);
+    /*  const today = new Date();
+    const from = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - 7
+    );
+    return this._http.get<any[]>( // TODO any
+      `${
+        this._apiUrl
+      }/ohlcv/BITSTAMP_SPOT_${cryptoName}_USD/history?period_id=1DAY&time_start=${convertDateToString(
+        from
+      )}&time_end=${convertDateToString(today)}`,
       {
         params: { apikey: this._apiKey },
       }
     ); */
-    return of(
-      JSON.parse(localStorage.getItem('tabs')).filter(
-        (tab) => tab.asset_id === assetId
-      )
-    );
   }
 
   getLoggedInUser() {
@@ -72,7 +91,7 @@ export class CryptoService {
       JSON.stringify(
         currentTabs.filter(
           (value) =>
-            value.name !== selectedTabName ||
+            value.asset_id !== selectedTabName ||
             value.userName !== this.getLoggedInUser().userName
         )
       )

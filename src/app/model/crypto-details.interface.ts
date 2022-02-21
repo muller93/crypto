@@ -1,4 +1,4 @@
-export interface CryptoDetails {
+export interface CryptoDetail {
   asset_id: string;
   name: string;
   type_is_crypto: number;

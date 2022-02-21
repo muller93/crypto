@@ -3,7 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { forkJoin, startWith } from 'rxjs';
-import { CryptoDetails } from 'src/app/model/crypto-details.interface';
+import { CryptoDetail } from 'src/app/model/crypto-details.interface';
 
 @UntilDestroy()
 @Component({
@@ -13,8 +13,8 @@ import { CryptoDetails } from 'src/app/model/crypto-details.interface';
   providers: [CryptoService],
 })
 export class NewComponent implements OnInit {
-  cryptos: CryptoDetails[];
-  selectedCrypto: CryptoDetails;
+  cryptos: CryptoDetail[];
+  selectedCrypto: CryptoDetail;
 
   constructor(
     public dialogRef: MatDialogRef<NewComponent>,
@@ -28,6 +28,7 @@ export class NewComponent implements OnInit {
     ])
       .pipe(untilDestroyed(this))
       .subscribe(([cryptos, tabs]) => {
+        console.log('cryptos', cryptos);
         this.cryptos = cryptos
           .filter((x) => x.type_is_crypto === 1)
           .sort((a, b) => a.name.localeCompare(b.name));

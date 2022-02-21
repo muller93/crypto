@@ -4,7 +4,7 @@
       <mat-tab
         *ngIf="loggedInUserName === tabData?.userName"
         #tab
-        label="{{ tabData?.name }}"
+        label="{{ tabData?.asset_id }}"
       ></mat-tab>
     </ng-container>
     <mat-tab>
@@ -33,3 +33,8 @@
     >delete</mat-icon
   >
 </div>
+<app-chart
+  *ngIf="cryptoDetail"
+  [setCryptoDetail]="cryptoDetail"
+  [selectedTabName]="selectedTabName$ | async"
+></app-chart>

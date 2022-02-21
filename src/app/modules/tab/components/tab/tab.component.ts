@@ -12,8 +12,9 @@ import { CryptoService } from 'src/app/service/crypto.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewComponent } from 'src/app/modules/new/components/new/new.component';
 import { Tab } from 'src/app/model/tab.inferface';
-import { CryptoDetails } from 'src/app/model/crypto-details.interface';
+import { CryptoDetail } from 'src/app/model/crypto-details.interface';
 import { isPresent } from 'src/app/utils/is-present';
+import { Chart } from 'src/app/model/chart.interface';
 
 @UntilDestroy()
 @Component({
@@ -31,7 +32,7 @@ export class TabComponent implements OnInit, AfterViewInit {
   tabs: Tab[];
   selectedTabName$ = new BehaviorSubject<string>(null);
   loggedInUserName: string;
-  cryptoDetail: CryptoDetails;
+  cryptoDetail: Chart[];
 
   constructor(
     private _cryptoService: CryptoService,
@@ -43,6 +44,9 @@ export class TabComponent implements OnInit, AfterViewInit {
   }
 
   public tabChanged(tabChangeEvent): void {
+    console.log('tabChangeEvent?.tab', tabChangeEvent?.tab);
+    console.log('tabChangeEvent?.tab.textLabel', tabChangeEvent?.tab.textLabel);
+    console.log('tabs', this.tabs);
     this.selectedTabName$.next(tabChangeEvent?.tab.textLabel);
   }
 
@@ -69,11 +73,17 @@ export class TabComponent implements OnInit, AfterViewInit {
         filter((x) => isPresent(x) && x !== ''),
         untilDestroyed(this)
       )
-      .subscribe((x) => {
+      .subscribe((tabName) => {
         this._cryptoService
-          .getCryptoDetail(this.tabs?.find((tab) => tab.name === x).asset_id)
+          .getCryptoChart(tabName)
           .pipe(untilDestroyed(this))
-          .subscribe((cryptoDetail) => (this.cryptoDetail = cryptoDetail));
+          .subscribe((cryptoDetail) => {
+            console.log('crdet', cryptoDetail);
+            this.cryptoDetail = cryptoDetail.map((detail) => ({
+              name: new Date(detail.time_period_end),
+              value: detail.price_close,
+            }));
+          });
       });
   }
 

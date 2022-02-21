@@ -15,8 +15,10 @@ import { LoginComponent } from './modules/login/components/login/login.component
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { ChartComponent } from './modules/chart/components/chart/chart.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 @NgModule({
-  declarations: [AppComponent, TabComponent, LoginComponent],
+  declarations: [AppComponent, TabComponent, LoginComponent, ChartComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -32,6 +34,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     ReactiveFormsModule,
     MatInputModule,
     MatFormFieldModule,
+    NgxChartsModule,
   ],
   bootstrap: [AppComponent],
 })

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { tabs } from './mock/tabs';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +9,9 @@ export class AppComponent implements OnInit {
   isLoggedIn = false;
 
   ngOnInit(): void {
-   // const jsonData = JSON.stringify(tabs);
-   // localStorage.setItem('tabs', jsonData);
+    // const jsonData = JSON.stringify(tabs);
+    // localStorage.setItem('tabs', jsonData);
     this.isLoggedIn = localStorage.getItem('loginData') !== null;
-
   }
 
   setLogin(event: boolean) {
