@@ -3,8 +3,7 @@ import { Chart } from 'src/app/model/chart.interface';
 
 @Component({
   selector: 'app-chart',
-  templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.scss'],
+  templateUrl: './chart.component.html'
 })
 export class ChartComponent {
   @Input() set setCryptoChart(value: Chart) {

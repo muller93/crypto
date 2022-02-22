@@ -16,24 +16,23 @@ import { Tab } from 'src/app/model/tab.inferface';
 import { isPresent } from 'src/app/utils/is-present';
 import { Chart } from 'src/app/model/chart.interface';
 import { CryptoDetail } from 'src/app/model/crypto-details.interface';
+import { GetChart } from 'src/app/model/get-chart.interface';
 
 @UntilDestroy()
 @Component({
   selector: 'app-tab',
   templateUrl: './tab.component.html',
   styleUrls: ['./tab.component.scss'],
-  providers: [CryptoService],
+  providers: [CryptoService, MatDialog],
 })
 export class TabComponent implements OnInit, AfterViewInit {
   @ViewChild('tab') tab;
   @Output() setLogin = new EventEmitter<boolean>();
   private _refreshList$ = new BehaviorSubject<void>(null);
-  private _refreshDetails$ = new BehaviorSubject<void>(null);
+  selectedTabName$ = new BehaviorSubject<string>(null);
 
   error: string;
   tabs: Tab[];
-  selectedTabName$ = new BehaviorSubject<string>(null);
-  selectedTabIndex = 0;
   cryptoChart: Chart[];
   cryptoDetails: CryptoDetail[];
   selectedTabUsdPrice: number;
@@ -97,7 +96,6 @@ export class TabComponent implements OnInit, AfterViewInit {
         this._cdr.detectChanges();
       });
 
-
     this.selectedTabName$
       .pipe(
         filter((x) => isPresent(x) && x !== ''),
@@ -107,7 +105,7 @@ export class TabComponent implements OnInit, AfterViewInit {
         this._cryptoService
           .getCryptoChart(tabName)
           .pipe(untilDestroyed(this))
-          .subscribe((cryptoChart) => {
+          .subscribe((cryptoChart: GetChart[]) => {
             this.cryptoChart = cryptoChart.map((detail) => ({
               name: new Date(detail.time_period_end),
               value: detail.price_close,

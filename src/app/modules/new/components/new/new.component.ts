@@ -30,9 +30,9 @@ export class NewComponent implements OnInit {
       .subscribe(([cryptos, tabs]) => {
         this.cryptos = cryptos
           .filter(
-            (x) =>
-              x.type_is_crypto === 1 &&
-              !tabs?.some((y) => y.asset_id === x.asset_id)
+            (crypto) =>
+              crypto.type_is_crypto === 1 &&
+              !tabs?.some((y) => y.asset_id === crypto.asset_id)
           )
           .sort((a, b) => a.name.localeCompare(b.name));
       });

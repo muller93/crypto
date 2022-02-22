@@ -9,7 +9,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class LoginComponent {
   @Output() setLogin = new EventEmitter<boolean>();
 
-  hide = true;
   showPasswordError: boolean;
 
   userNameControl = new FormControl();

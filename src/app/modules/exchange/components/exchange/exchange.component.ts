@@ -5,7 +5,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 @Component({
   selector: 'app-exchange',
   templateUrl: './exchange.component.html',
-  styleUrls: ['./exchange.component.scss'],
 })
 @UntilDestroy()
 export class ExchangeComponent implements OnInit {

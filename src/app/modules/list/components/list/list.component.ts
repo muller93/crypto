@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { List } from 'src/app/model/list.interface';
@@ -11,9 +11,9 @@ import { CryptoService } from 'src/app/service/crypto.service';
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
-  @Input() cryptoDetails: List[];
   displayedColumns = ['coin', 'price_low', 'price_high'];
   dataSource = new MatTableDataSource<List>([]);
+
   constructor(private _cryptoService: CryptoService) {}
 
   ngOnInit(): void {

@@ -7,11 +7,13 @@ import { CryptoDetail } from '../model/crypto-details.interface';
 import { Tab } from '../model/tab.inferface';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { convertDateToString } from '../utils/date-ot-string';
+import { GetChart } from '../model/get-chart.interface';
 @Injectable()
 export class CryptoService {
   // private _apiKey = 'B282AA63-91E4-417B-8A8F-44C2EE8F075E';
   // private _apiKey = 'D04B1E7E-28D2-4762-903B-39410A5AC784';
-  private _apiKey = '62C27950-1D5F-427F-818F-7328FB4CBC41';
+  // private _apiKey = '62C27950-1D5F-427F-818F-7328FB4CBC41';
+  private _apiKey = 'C4CD1627-E669-49DC-8A32-E68EFB96F7E9';
   private _apiUrl = 'https://rest.coinapi.io/v1';
   connection$: WebSocketSubject<any>;
 
@@ -19,16 +21,16 @@ export class CryptoService {
 
   connect(tabs: string[]): Observable<any> {
     if (this.connection$) {
-      this.send(tabs);
+      this._send(tabs);
       return this.connection$;
     } else {
       this.connection$ = webSocket('wss://ws-sandbox.coinapi.io/v1/');
-      this.send(tabs);
+      this._send(tabs);
       return this.connection$;
     }
   }
 
-  send(tabs: string[]) {
+  private _send(tabs: string[]) {
     if (this.connection$) {
       this.connection$.next({
         type: 'hello',
@@ -68,7 +70,7 @@ export class CryptoService {
     });
   }
 
-  getCryptoChart(cryptoName: string): Observable<any> {
+  getCryptoChart(cryptoName: string): Observable<GetChart[]> {
     // return of(chartData);
     const today = new Date();
     const from = new Date(
@@ -76,7 +78,7 @@ export class CryptoService {
       today.getMonth(),
       today.getDate() - 7
     );
-    return this._http.get<any[]>( // TODO any
+    return this._http.get<GetChart[]>(
       `${
         this._apiUrl
       }/ohlcv/BITSTAMP_SPOT_${cryptoName}_USD/history?period_id=1DAY&time_start=${convertDateToString(
