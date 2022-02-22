@@ -28,8 +28,14 @@ export class NewComponent implements OnInit {
     ])
       .pipe(untilDestroyed(this))
       .subscribe(([cryptos, tabs]) => {
+        console.log('tabs', tabs);
+        console.log('cryptos', cryptos);
         this.cryptos = cryptos
-          .filter((x) => x.type_is_crypto === 1)
+          .filter(
+            (x) =>
+              x.type_is_crypto === 1 &&
+              !tabs.some((y) => y.asset_id === x.asset_id)
+          )
           .sort((a, b) => a.name.localeCompare(b.name));
       });
   }

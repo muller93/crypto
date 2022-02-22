@@ -58,12 +58,11 @@ export class TabComponent implements OnInit, AfterViewInit {
     this.selectedTabName$.next(tabChangeEvent?.tab.textLabel);
     this.selectedTabUsdPrice = this.cryptoDetails.find(
       (x) => x.asset_id === this.selectedTabName$.value
-    ).price_usd;
+    )?.price_usd;
   }
 
   ngOnInit(): void {
     this._cryptoService.connect();
-    this._cryptoService.connection$.subscribe((x) => console.log('conn', x));
     this.loggedInUserName = JSON.parse(
       localStorage.getItem('loggedInUser')
     ).userName;
