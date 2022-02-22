@@ -42,6 +42,10 @@
     ></app-chart>
   </div>
   <div class="col-4 pe-3">
-    <app-exchange [setSelectedTabName]="selectedTabName$ | async" [setUsdPrice]="selectedTabUsdPrice"></app-exchange>
+    <app-list *ngIf="cryptoDetails" [cryptoDetails]="cryptoDetails"></app-list>
   </div>
 </div>
+<app-exchange
+  [setSelectedTabName]="selectedTabName$ | async"
+  [setUsdPrice]="selectedTabUsdPrice"
+></app-exchange>

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { debounceTime, Observable, of } from 'rxjs';
 import { chartData } from '../mock/chart';
 import { cryptos } from '../mock/cryptos';
 import { CryptoDetail } from '../model/crypto-details.interface';
@@ -27,9 +27,10 @@ export class CryptoService {
   }
 
   getCryptoDetails(assetIds: string[]): Observable<CryptoDetail[]> {
-    return this._http.get<CryptoDetail[]>(`${this._apiUrl}/assets/`, {
+    return of(cryptos);
+    /* return this._http.get<CryptoDetail[]>(`${this._apiUrl}/assets/`, {
       params: { apikey: this._apiKey, filter_asset_id: assetIds.join() },
-    });
+    }); */
     /* return of(
       JSON.parse(localStorage.getItem('tabs')).filter(
         (tab) => tab.asset_id === assetId

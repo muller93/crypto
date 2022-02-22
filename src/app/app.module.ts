@@ -1,23 +1,26 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { AppComponent } from './app.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TabModule } from './modules/tab/tab.module';
-import { TabComponent } from './modules/tab/components/tab/tab.component';
-import { MatTabsModule } from '@angular/material/tabs';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatSelectModule } from '@angular/material/select';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { NewModule } from './modules/new/new.module';
-import { MatIconModule } from '@angular/material/icon';
-import { LoginComponent } from './modules/login/components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ChartComponent } from './modules/chart/components/chart/chart.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { AppComponent } from './app.component';
+import { ChartComponent } from './modules/chart/components/chart/chart.component';
 import { ExchangeComponent } from './modules/exchange/components/exchange/exchange.component';
+import { ListComponent } from './modules/list/components/list/list.component';
+import { LoginComponent } from './modules/login/components/login/login.component';
+import { NewModule } from './modules/new/new.module';
+import { TabComponent } from './modules/tab/components/tab/tab.component';
+import { TabModule } from './modules/tab/tab.module';
+import {MatTableModule} from '@angular/material/table';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,6 +28,7 @@ import { ExchangeComponent } from './modules/exchange/components/exchange/exchan
     LoginComponent,
     ChartComponent,
     ExchangeComponent,
+    ListComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,6 +46,7 @@ import { ExchangeComponent } from './modules/exchange/components/exchange/exchan
     MatInputModule,
     MatFormFieldModule,
     NgxChartsModule,
+    MatTableModule
   ],
   bootstrap: [AppComponent],
 })

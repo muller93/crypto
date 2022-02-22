@@ -6,7 +6,15 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { switchMap, catchError, of, BehaviorSubject, tap, filter } from 'rxjs';
+import {
+  switchMap,
+  catchError,
+  of,
+  BehaviorSubject,
+  tap,
+  filter,
+  debounceTime,
+} from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -81,10 +89,13 @@ export class TabComponent implements OnInit, AfterViewInit {
         untilDestroyed(this)
       )
       .subscribe((cryptoDetails) => {
-        this.cryptoDetails = cryptoDetails as CryptoDetail[];
-        this.selectedTabUsdPrice = this.cryptoDetails.find(
-          (x) => x.asset_id === this.selectedTabName$.value
-        ).price_usd;
+        setTimeout(() => {
+          this.cryptoDetails = cryptoDetails as CryptoDetail[];
+          this.selectedTabUsdPrice = this.cryptoDetails.find(
+            (x) => x.asset_id === this.selectedTabName$.value
+          ).price_usd;
+        console.log('this.cryptoDetails', this.cryptoDetails)
+        }, 500); // TODO async miatt van, ki kell majd szedni
       });
 
     this.selectedTabName$
