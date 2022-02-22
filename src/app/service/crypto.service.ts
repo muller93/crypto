@@ -1,15 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { debounceTime, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { chartData } from '../mock/chart';
 import { cryptos } from '../mock/cryptos';
 import { CryptoDetail } from '../model/crypto-details.interface';
 import { Tab } from '../model/tab.inferface';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { convertDateToString } from '../utils/date-ot-string';
 @Injectable()
 export class CryptoService {
-  private _apiKey = 'B282AA63-91E4-417B-8A8F-44C2EE8F075E';
+  // private _apiKey = 'B282AA63-91E4-417B-8A8F-44C2EE8F075E';
   // private _apiKey = 'D04B1E7E-28D2-4762-903B-39410A5AC784';
+  private _apiKey = '62C27950-1D5F-427F-818F-7328FB4CBC41';
   private _apiUrl = 'https://rest.coinapi.io/v1';
   connection$: WebSocketSubject<any>;
 
@@ -42,31 +44,33 @@ export class CryptoService {
   }
 
   getAllCrypto(): Observable<CryptoDetail[]> {
-    return of(cryptos);
-    /*   return this._http.get<CryptoDetail[]>(`${this._apiUrl}/assets`, {
+    // return of(cryptos);
+    return this._http.get<CryptoDetail[]>(`${this._apiUrl}/assets`, {
       params: { apikey: this._apiKey },
-    }); */
+    });
   }
 
   getTabs(): Observable<CryptoDetail[]> {
-    return of(JSON.parse(localStorage.getItem('tabs')));
+    const loggedInUserName = JSON.parse(
+      localStorage.getItem('loggedInUser')
+    ).userName;
+    return of(
+      JSON.parse(localStorage.getItem('tabs'))?.filter(
+        (tab) => tab.userName === loggedInUserName
+      )
+    );
   }
 
   getCryptoDetails(assetIds: string[]): Observable<CryptoDetail[]> {
-    return of(cryptos);
-    /* return this._http.get<CryptoDetail[]>(`${this._apiUrl}/assets/`, {
-      params: { apikey: this._apiKey, filter_asset_id: assetIds.join() },
-    }); */
-    /* return of(
-      JSON.parse(localStorage.getItem('tabs')).filter(
-        (tab) => tab.asset_id === assetId
-      )
-    ); */
+    // return of(cryptos);
+    return this._http.get<CryptoDetail[]>(`${this._apiUrl}/assets/`, {
+      params: { apikey: this._apiKey, filter_asset_id: assetIds?.join() },
+    });
   }
 
   getCryptoChart(cryptoName: string): Observable<any> {
-    return of(chartData);
-    /* const today = new Date();
+    // return of(chartData);
+    const today = new Date();
     const from = new Date(
       today.getFullYear(),
       today.getMonth(),
@@ -81,7 +85,7 @@ export class CryptoService {
       {
         params: { apikey: this._apiKey },
       }
-    ); */
+    );
   }
 
   getLoggedInUser() {

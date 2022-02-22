@@ -1,11 +1,7 @@
 <div class="d-flex justify-content-between">
   <mat-tab-group (selectedTabChange)="tabChanged($event)">
     <ng-container *ngFor="let tabData of tabs">
-      <mat-tab
-        *ngIf="loggedInUserName === tabData?.userName"
-        #tab
-        label="{{ tabData?.asset_id }}"
-      >
+      <mat-tab #tab label="{{ tabData?.asset_id }}">
         <ng-template mat-tab-label>
           <img
             class="crypto-icon me-2"
@@ -37,6 +33,7 @@
 </div>
 <div class="d-flex justify-content-end pe-5">
   <mat-icon
+    *ngIf="selectedTabName$ | async"
     class="mr-5 cursor-pointer"
     aria-hidden="false"
     aria-label="Example home icon"
@@ -53,14 +50,17 @@
         [selectedTabName]="selectedTabName$ | async"
       ></app-chart>
     </div>
-    <div>
+    <div *ngIf="selectedTabName$ | async">
       <app-exchange
         [setSelectedTabName]="selectedTabName$ | async"
         [setUsdPrice]="selectedTabUsdPrice"
       ></app-exchange>
     </div>
   </div>
-  <div class="col-4 pe-3" *ngIf="!loading">
+  <div
+    class="col-4 pe-3"
+    *ngIf="!loading && cryptoDetails?.length && tabs?.length"
+  >
     <app-list *ngIf="cryptoDetails" [cryptoDetails]="cryptoDetails"></app-list>
   </div>
 </div>

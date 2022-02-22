@@ -28,12 +28,12 @@ export class TabComponent implements OnInit, AfterViewInit {
   @ViewChild('tab') tab;
   @Output() setLogin = new EventEmitter<boolean>();
   private _refreshList$ = new BehaviorSubject<void>(null);
+  private _refreshDetails$ = new BehaviorSubject<void>(null);
 
   error: string;
   tabs: Tab[];
   selectedTabName$ = new BehaviorSubject<string>(null);
   selectedTabIndex = 0;
-  loggedInUserName: string;
   cryptoChart: Chart[];
   cryptoDetails: CryptoDetail[];
   selectedTabUsdPrice: number;
@@ -46,6 +46,7 @@ export class TabComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.selectedTabName$.next(this.tab?.textLabel);
+    this._cdr.detectChanges();
   }
 
   tabChanged(tabChangeEvent): void {
@@ -56,9 +57,6 @@ export class TabComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.loggedInUserName = JSON.parse(
-      localStorage.getItem('loggedInUser')
-    ).userName;
     this._refreshList$
       .pipe(
         switchMap(() =>
@@ -77,23 +75,28 @@ export class TabComponent implements OnInit, AfterViewInit {
         this.loading = false;
       });
 
-    this._cryptoService
-      .getCryptoDetails(this.tabs?.map((tab) => tab.asset_id))
+    this._refreshList$
       .pipe(
-        catchError((err) => {
-          this.error = err;
-          return of<Tab[]>([]);
-        }),
+        switchMap(() =>
+          this._cryptoService
+            .getCryptoDetails(this.tabs?.map((tab) => tab.asset_id))
+            .pipe(
+              catchError((err) => {
+                this.error = err;
+                return of<Tab[]>([]);
+              })
+            )
+        ),
         untilDestroyed(this)
       )
       .subscribe((cryptoDetails) => {
-        setTimeout(() => {
-          this.cryptoDetails = cryptoDetails as CryptoDetail[];
-          this.selectedTabUsdPrice = this.cryptoDetails.find(
-            (x) => x.asset_id === this.selectedTabName$.value
-          ).price_usd;
-        }, 500); // TODO async miatt van, ki kell majd szedni
+        this.cryptoDetails = cryptoDetails as CryptoDetail[];
+        this.selectedTabUsdPrice = this.cryptoDetails.find(
+          (x) => x.asset_id === this.selectedTabName$.value
+        )?.price_usd;
+        this._cdr.detectChanges();
       });
+
 
     this.selectedTabName$
       .pipe(

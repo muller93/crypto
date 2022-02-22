@@ -32,7 +32,7 @@ export class NewComponent implements OnInit {
           .filter(
             (x) =>
               x.type_is_crypto === 1 &&
-              !tabs.some((y) => y.asset_id === x.asset_id)
+              !tabs?.some((y) => y.asset_id === x.asset_id)
           )
           .sort((a, b) => a.name.localeCompare(b.name));
       });

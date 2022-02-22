@@ -11,16 +11,28 @@
       />
       <img />
       <span>{{ element.coin }} </span>
-    </mat-cell> </ng-container
-  ><ng-container matColumnDef="price_low">
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="price_low">
     <mat-header-cell *matHeaderCellDef>Low</mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <span *ngIf="element.price_low">{{ element.price_low }}$</span>
-    </mat-cell> </ng-container
-  ><ng-container matColumnDef="price_high">
+      <span *ngIf="element.price_low; else loadingLow">
+        {{ element.price_low }}$
+      </span>
+      <ng-template #loadingLow>
+        <mat-spinner [diameter]="24"></mat-spinner>
+      </ng-template>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="price_high">
     <mat-header-cell *matHeaderCellDef>High</mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <span *ngIf="element.price_high">{{ element.price_high }}$</span>
+      <span *ngIf="element.price_high; else loadingHigh">
+        {{ element.price_high }}$
+      </span>
+      <ng-template #loadingHigh>
+        <mat-spinner [diameter]="24"></mat-spinner>
+      </ng-template>
     </mat-cell>
   </ng-container>
   <mat-header-row

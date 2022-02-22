@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [NewComponent, SelectComponent],
@@ -25,6 +26,7 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
+    ScrollingModule
   ],
 })
 export class NewModule {}

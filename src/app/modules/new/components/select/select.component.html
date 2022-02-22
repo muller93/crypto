@@ -1,12 +1,24 @@
 <mat-form-field class="w-100">
-  <input type="text" placeholder="Pick one" matInput [matAutocomplete]="auto" />
+  <input
+    type="text"
+    placeholder="Pick one"
+    matInput
+    [matAutocomplete]="auto"
+    [formControl]="cryptoControl"
+  />
 </mat-form-field>
 <mat-autocomplete
   #auto="matAutocomplete"
   [displayWith]="displayFn"
   (optionSelected)="onSelectionChange($event)"
 >
-  <mat-option *ngFor="let crypto of cryptos" [value]="crypto">
-    {{ crypto.name }} ({{ crypto.asset_id }})
-  </mat-option>
+  <cdk-virtual-scroll-viewport
+    [itemSize]="48"
+    [style.height.px]="5 * 48"
+    *ngIf="cryptos"
+  >
+    <mat-option *cdkVirtualFor="let option of filteredOptions" [value]="option">
+      {{ option.name }} ({{ option.asset_id }})
+    </mat-option>
+  </cdk-virtual-scroll-viewport>
 </mat-autocomplete>
