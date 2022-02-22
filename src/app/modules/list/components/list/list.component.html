@@ -2,17 +2,17 @@
   <ng-container matColumnDef="coin">
     <mat-header-cell *matHeaderCellDef>Coin</mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <span>{{ element.asset_id }}</span>
+      <span>{{ element.coin }}</span>
     </mat-cell> </ng-container
-  ><ng-container matColumnDef="low">
+  ><ng-container matColumnDef="price_low">
     <mat-header-cell *matHeaderCellDef>Low</mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <span>{{ element.asset_id }}</span>
+      <span>{{ element.price_low }}$</span>
     </mat-cell> </ng-container
-  ><ng-container matColumnDef="high">
+  ><ng-container matColumnDef="price_high">
     <mat-header-cell *matHeaderCellDef>High</mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <span>{{ element.asset_id }}</span>
+      <span>{{ element.price_high }}$</span>
     </mat-cell>
   </ng-container>
   <mat-header-row

@@ -5,15 +5,40 @@ import { chartData } from '../mock/chart';
 import { cryptos } from '../mock/cryptos';
 import { CryptoDetail } from '../model/crypto-details.interface';
 import { Tab } from '../model/tab.inferface';
-import { convertDateToString } from '../utils/date-ot-string';
-
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 @Injectable()
 export class CryptoService {
-  // private _apiKey = 'B282AA63-91E4-417B-8A8F-44C2EE8F075E';
-  private _apiKey = 'D04B1E7E-28D2-4762-903B-39410A5AC784';
+  private _apiKey = 'B282AA63-91E4-417B-8A8F-44C2EE8F075E';
+  // private _apiKey = 'D04B1E7E-28D2-4762-903B-39410A5AC784';
   private _apiUrl = 'https://rest.coinapi.io/v1';
+  connection$: WebSocketSubject<any>;
+  RETRY_SECONDS = 10;
 
   constructor(private _http: HttpClient) {}
+
+  connect(): Observable<any> {
+    if (this.connection$) {
+      return this.connection$;
+    } else {
+      this.connection$ = webSocket('wss://ws-sandbox.coinapi.io/v1/');
+      return this.connection$;
+    }
+  }
+
+  send(tabs: string[]) {
+    if (this.connection$) {
+      this.connection$.next({
+        type: 'hello',
+        apikey: this._apiKey,
+        heartbeat: false,
+        subscribe_data_type: ['ohlcv'],
+        subscribe_filter_asset_id: tabs,
+        subscribe_filter_period_id: ['1MIN'],
+      });
+    } else {
+      console.error('Did not send data, open a connection first');
+    }
+  }
 
   getAllCrypto(): Observable<CryptoDetail[]> {
     return of(cryptos);

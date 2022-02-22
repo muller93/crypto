@@ -62,6 +62,8 @@ export class TabComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this._cryptoService.connect();
+    this._cryptoService.connection$.subscribe((x) => console.log('conn', x));
     this.loggedInUserName = JSON.parse(
       localStorage.getItem('loggedInUser')
     ).userName;
@@ -77,7 +79,10 @@ export class TabComponent implements OnInit, AfterViewInit {
         ),
         untilDestroyed(this)
       )
-      .subscribe((tabs) => (this.tabs = tabs as Tab[]));
+      .subscribe((tabs) => {
+        this.tabs = tabs as Tab[];
+        this._cryptoService.send(this.tabs?.map((tab) => tab.asset_id + '/USD'))
+      });
 
     this._cryptoService
       .getCryptoDetails(this.tabs?.map((tab) => tab.asset_id))
@@ -94,7 +99,6 @@ export class TabComponent implements OnInit, AfterViewInit {
           this.selectedTabUsdPrice = this.cryptoDetails.find(
             (x) => x.asset_id === this.selectedTabName$.value
           ).price_usd;
-        console.log('this.cryptoDetails', this.cryptoDetails)
         }, 500); // TODO async miatt van, ki kell majd szedni
       });
 
