@@ -1,20 +1,13 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
-import {
-  switchMap,
-  catchError,
-  of,
-  BehaviorSubject,
-  tap,
-  filter,
-  debounceTime,
-} from 'rxjs';
+import { switchMap, catchError, of, BehaviorSubject, filter } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -44,10 +37,11 @@ export class TabComponent implements OnInit, AfterViewInit {
   cryptoChart: Chart[];
   cryptoDetails: CryptoDetail[];
   selectedTabUsdPrice: number;
-
+  loading = true;
   constructor(
     private _cryptoService: CryptoService,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _cdr: ChangeDetectorRef
   ) {}
 
   ngAfterViewInit() {
@@ -62,7 +56,6 @@ export class TabComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this._cryptoService.connect();
     this.loggedInUserName = JSON.parse(
       localStorage.getItem('loggedInUser')
     ).userName;
@@ -80,7 +73,8 @@ export class TabComponent implements OnInit, AfterViewInit {
       )
       .subscribe((tabs) => {
         this.tabs = tabs as Tab[];
-        this._cryptoService.send(this.tabs?.map((tab) => tab.asset_id + '/USD'))
+        this._cdr.detectChanges();
+        this.loading = false;
       });
 
     this._cryptoService
@@ -115,6 +109,7 @@ export class TabComponent implements OnInit, AfterViewInit {
               name: new Date(detail.time_period_end),
               value: detail.price_close,
             }));
+            this._cdr.detectChanges();
           });
       });
   }
@@ -125,12 +120,16 @@ export class TabComponent implements OnInit, AfterViewInit {
       .afterClosed()
       .pipe(untilDestroyed(this))
       .subscribe((result) => {
-        if (result) this._cryptoService.addTab(result.data);
-        this._refreshList$.next();
+        if (result) {
+          this.loading = true;
+          this._cryptoService.addTab(result.data);
+          this._refreshList$.next();
+        }
       });
   }
 
   deleteTab() {
+    this.loading = true;
     this._cryptoService.deleteTab(this.selectedTabName$.value);
     this._refreshList$.next();
     this.selectedTabName$.next(null);

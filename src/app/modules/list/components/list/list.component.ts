@@ -1,7 +1,6 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { CryptoDetail } from 'src/app/model/crypto-details.interface';
 import { List } from 'src/app/model/list.interface';
 import { CryptoService } from 'src/app/service/crypto.service';
 
@@ -18,6 +17,19 @@ export class ListComponent implements OnInit {
   constructor(private _cryptoService: CryptoService) {}
 
   ngOnInit(): void {
+    console.log('init');
+    this._cryptoService
+      .getTabs()
+      .pipe(untilDestroyed(this))
+      .subscribe((tabs) => {
+        this.dataSource.data = tabs.map((tab) => ({
+          coin: tab.asset_id,
+          price_low: null,
+          price_high: null,
+        }));
+        this._cryptoService.connect(tabs?.map((tab) => tab.asset_id + '/USD'));
+        console.log('asd');
+      });
     this._cryptoService.connection$
       .pipe(untilDestroyed(this))
       .subscribe((x) => {
@@ -30,12 +42,9 @@ export class ListComponent implements OnInit {
         const index = this.dataSource.data.findIndex(
           (data) => data.coin === coin[2]
         );
-        if (index !== -1) {
-          this.dataSource.data[index] = { ...data };
-        } else {
-          this.dataSource.data = [...this.dataSource.data, data];
-        }
+        this.dataSource.data[index] = { ...data };
         this.dataSource.data = [...this.dataSource.data]; // referenciát kell frissíteni, különben nem változnak a táblázatban az értékek
+        console.log(x);
       });
   }
 }

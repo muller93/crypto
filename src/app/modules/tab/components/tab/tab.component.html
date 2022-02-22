@@ -5,7 +5,18 @@
         *ngIf="loggedInUserName === tabData?.userName"
         #tab
         label="{{ tabData?.asset_id }}"
-      ></mat-tab>
+      >
+        <ng-template mat-tab-label>
+          <img
+            class="crypto-icon me-2"
+            [src]="
+              'https://cryptoicon-api.vercel.app/api/icon/' + tabData?.asset_id
+                | lowercase
+            "
+          />
+          <span>{{ tabData?.asset_id }}</span>
+        </ng-template>
+      </mat-tab>
     </ng-container>
     <mat-tab>
       <ng-template mat-tab-label>
@@ -49,7 +60,7 @@
       ></app-exchange>
     </div>
   </div>
-  <div class="col-4 pe-3">
+  <div class="col-4 pe-3" *ngIf="!loading">
     <app-list *ngIf="cryptoDetails" [cryptoDetails]="cryptoDetails"></app-list>
   </div>
 </div>

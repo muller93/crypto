@@ -12,15 +12,16 @@ export class CryptoService {
   // private _apiKey = 'D04B1E7E-28D2-4762-903B-39410A5AC784';
   private _apiUrl = 'https://rest.coinapi.io/v1';
   connection$: WebSocketSubject<any>;
-  RETRY_SECONDS = 10;
 
   constructor(private _http: HttpClient) {}
 
-  connect(): Observable<any> {
+  connect(tabs: string[]): Observable<any> {
     if (this.connection$) {
+      this.send(tabs);
       return this.connection$;
     } else {
       this.connection$ = webSocket('wss://ws-sandbox.coinapi.io/v1/');
+      this.send(tabs);
       return this.connection$;
     }
   }

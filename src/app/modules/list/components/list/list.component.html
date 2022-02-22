@@ -2,17 +2,25 @@
   <ng-container matColumnDef="coin">
     <mat-header-cell *matHeaderCellDef>Coin</mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <span>{{ element.coin }}</span>
+      <img
+        class="crypto-icon me-2"
+        [src]="
+          'https://cryptoicon-api.vercel.app/api/icon/' + element.coin
+            | lowercase
+        "
+      />
+      <img />
+      <span>{{ element.coin }} </span>
     </mat-cell> </ng-container
   ><ng-container matColumnDef="price_low">
     <mat-header-cell *matHeaderCellDef>Low</mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <span>{{ element.price_low }}$</span>
+      <span *ngIf="element.price_low">{{ element.price_low }}$</span>
     </mat-cell> </ng-container
   ><ng-container matColumnDef="price_high">
     <mat-header-cell *matHeaderCellDef>High</mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <span>{{ element.price_high }}$</span>
+      <span *ngIf="element.price_high">{{ element.price_high }}$</span>
     </mat-cell>
   </ng-container>
   <mat-header-row
