@@ -28,8 +28,6 @@ export class NewComponent implements OnInit {
     ])
       .pipe(untilDestroyed(this))
       .subscribe(([cryptos, tabs]) => {
-        console.log('tabs', tabs);
-        console.log('cryptos', cryptos);
         this.cryptos = cryptos
           .filter(
             (x) =>
