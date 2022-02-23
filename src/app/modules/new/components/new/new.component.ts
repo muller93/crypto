@@ -48,7 +48,6 @@ export class NewComponent implements OnInit {
               !tabs?.some((y) => y.asset_id === crypto.asset_id)
           )
           .sort((a, b) => a.name.localeCompare(b.name));
-        console.log('cryptos', this.cryptos);
       });
   }
 
