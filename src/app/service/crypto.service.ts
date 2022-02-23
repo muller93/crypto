@@ -10,10 +10,10 @@ import { convertDateToString } from '../utils/date-ot-string';
 import { GetChart } from '../model/get-chart.interface';
 @Injectable()
 export class CryptoService {
-  // private _apiKey = 'B282AA63-91E4-417B-8A8F-44C2EE8F075E';
+   private _apiKey = 'B282AA63-91E4-417B-8A8F-44C2EE8F075E';
   // private _apiKey = 'D04B1E7E-28D2-4762-903B-39410A5AC784';
   // private _apiKey = '62C27950-1D5F-427F-818F-7328FB4CBC41';
-  private _apiKey = 'C4CD1627-E669-49DC-8A32-E68EFB96F7E9';
+  // private _apiKey = 'C4CD1627-E669-49DC-8A32-E68EFB96F7E9';
   private _apiUrl = 'https://rest.coinapi.io/v1';
   connection$: WebSocketSubject<any>;
 

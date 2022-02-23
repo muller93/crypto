@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { CryptoService } from 'src/app/service/crypto.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { forkJoin, startWith } from 'rxjs';
+import { catchError, forkJoin, of, startWith } from 'rxjs';
 import { CryptoDetail } from 'src/app/model/crypto-details.interface';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @UntilDestroy()
 @Component({
@@ -15,6 +16,7 @@ import { CryptoDetail } from 'src/app/model/crypto-details.interface';
 export class NewComponent implements OnInit {
   cryptos: CryptoDetail[];
   selectedCrypto: CryptoDetail;
+  error: HttpErrorResponse;
 
   constructor(
     public dialogRef: MatDialogRef<NewComponent>,
@@ -23,8 +25,19 @@ export class NewComponent implements OnInit {
 
   ngOnInit(): void {
     forkJoin([
-      this._cryptoService.getAllCrypto(),
-      this._cryptoService.getTabs().pipe(startWith([])),
+      this._cryptoService.getAllCrypto().pipe(
+        catchError((err) => {
+          this.error = err;
+          return of<CryptoDetail[]>([]);
+        })
+      ),
+      this._cryptoService.getTabs().pipe(
+        startWith([]),
+        catchError((err) => {
+          this.error = err;
+          return of<CryptoDetail[]>([]);
+        })
+      ),
     ])
       .pipe(untilDestroyed(this))
       .subscribe(([cryptos, tabs]) => {
@@ -35,6 +48,7 @@ export class NewComponent implements OnInit {
               !tabs?.some((y) => y.asset_id === crypto.asset_id)
           )
           .sort((a, b) => a.name.localeCompare(b.name));
+        console.log('cryptos', this.cryptos);
       });
   }
 

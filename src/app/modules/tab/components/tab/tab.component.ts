@@ -17,6 +17,7 @@ import { isPresent } from 'src/app/utils/is-present';
 import { Chart } from 'src/app/model/chart.interface';
 import { CryptoDetail } from 'src/app/model/crypto-details.interface';
 import { GetChart } from 'src/app/model/get-chart.interface';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @UntilDestroy()
 @Component({
@@ -31,7 +32,7 @@ export class TabComponent implements OnInit, AfterViewInit {
   private _refreshList$ = new BehaviorSubject<void>(null);
   selectedTabName$ = new BehaviorSubject<string>(null);
 
-  error: string;
+  error: HttpErrorResponse;
   tabs: Tab[];
   cryptoChart: Chart[];
   cryptoDetails: CryptoDetail[];
@@ -104,7 +105,13 @@ export class TabComponent implements OnInit, AfterViewInit {
       .subscribe((tabName) => {
         this._cryptoService
           .getCryptoChart(tabName)
-          .pipe(untilDestroyed(this))
+          .pipe(
+            catchError((err) => {
+              this.error = err;
+              return of<GetChart[]>([]);
+            }),
+            untilDestroyed(this)
+          )
           .subscribe((cryptoChart: GetChart[]) => {
             this.cryptoChart = cryptoChart.map((detail) => ({
               name: new Date(detail.time_period_end),
