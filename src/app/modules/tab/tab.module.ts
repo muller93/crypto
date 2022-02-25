@@ -7,7 +7,7 @@ import { ListModule } from '../list/list.module';
 import { ChartModule } from '../chart/chart.module';
 import { ExchangeModule } from '../exchange/exchange.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ErrorMessageModule } from '../error-message/error-message.module';
+import { CoreModule } from '../core/core.module';
 
 @NgModule({
   declarations: [TabComponent],
@@ -20,7 +20,7 @@ import { ErrorMessageModule } from '../error-message/error-message.module';
     ChartModule,
     ExchangeModule,
     MatDialogModule,
-    ErrorMessageModule
+    CoreModule,
   ],
 })
 export class TabModule {}

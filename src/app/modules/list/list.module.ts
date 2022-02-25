@@ -3,16 +3,11 @@ import { ListComponent } from './components/list/list.component';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ErrorMessageModule } from '../error-message/error-message.module';
+import { CoreModule } from '../core/core.module';
 
 @NgModule({
   declarations: [ListComponent],
-  imports: [
-    MatTableModule,
-    CommonModule,
-    MatProgressSpinnerModule,
-    ErrorMessageModule,
-  ],
+  imports: [MatTableModule, CommonModule, MatProgressSpinnerModule, CoreModule],
   exports: [ListComponent],
 })
 export class ListModule {}

@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { chartData } from '../mock/chart';
-import { cryptos } from '../mock/cryptos';
 import { CryptoDetail } from '../model/crypto-details.interface';
 import { Tab } from '../model/tab.inferface';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { convertDateToString } from '../utils/date-ot-string';
 import { GetChart } from '../model/get-chart.interface';
+import { User } from '../model/user.interface';
 @Injectable()
 export class CryptoService {
    private _apiKey = 'B282AA63-91E4-417B-8A8F-44C2EE8F075E';
@@ -30,7 +29,7 @@ export class CryptoService {
     }
   }
 
-  private _send(tabs: string[]) {
+  private _send(tabs: string[]): void {
     if (this.connection$) {
       this.connection$.next({
         type: 'hello',
@@ -90,11 +89,11 @@ export class CryptoService {
     );
   }
 
-  getLoggedInUser() {
+  getLoggedInUser(): User {
     return JSON.parse(localStorage.getItem('loggedInUser'));
   }
 
-  addTab(newTab: Tab) {
+  addTab(newTab: Tab): void {
     const currentTabs: Tab[] = JSON.parse(localStorage.getItem('tabs'));
     const stringifiedTabs = JSON.stringify(
       currentTabs
@@ -117,7 +116,7 @@ export class CryptoService {
     localStorage.setItem('tabs', stringifiedTabs);
   }
 
-  deleteTab(selectedTabName: string) {
+  deleteTab(selectedTabName: string): void {
     const currentTabs: Tab[] = JSON.parse(localStorage.getItem('tabs'));
     localStorage.setItem(
       'tabs',

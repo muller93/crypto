@@ -6,8 +6,8 @@ import { AppComponent } from './app.component';
 import { NewModule } from './modules/new/new.module';
 import { TabModule } from './modules/tab/tab.module';
 import { ListModule } from './modules/list/list.module';
-import { LoginModule } from './modules/login/login.module';
 import { CommonModule } from '@angular/common';
+import { CoreModule } from './modules/core/core.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,9 +17,9 @@ import { CommonModule } from '@angular/common';
     HttpClientModule,
     BrowserAnimationsModule,
     ListModule,
-    LoginModule,
     NewModule,
     TabModule,
+    CoreModule
   ],
   bootstrap: [AppComponent],
 })

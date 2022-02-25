@@ -122,7 +122,7 @@ export class TabComponent implements OnInit, AfterViewInit {
       });
   }
 
-  addNew() {
+  addNew(): void {
     const dialogRef = this._dialog.open(NewComponent);
     dialogRef
       .afterClosed()
@@ -136,7 +136,7 @@ export class TabComponent implements OnInit, AfterViewInit {
       });
   }
 
-  deleteTab() {
+  deleteTab(): void {
     this.loading = true;
     this._cryptoService.deleteTab(this.selectedTabName$.value);
     this._refreshList$.next();

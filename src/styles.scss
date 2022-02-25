@@ -10,18 +10,21 @@ html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
 .success {
   background-color: #4caf50;
   color: white;
 }
 
-mat-dialog-container {
+.mat-dialog-width {
   min-width: 400px;
 }
+
 .crypto-icon {
   width: 24px;
   height: 24px;

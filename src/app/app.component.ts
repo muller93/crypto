@@ -11,7 +11,7 @@ export class AppComponent implements OnInit {
     this.isLoggedIn = localStorage.getItem('loginData') !== null;
   }
 
-  setLogin(event: boolean) {
+  setLogin(event: boolean): void {
     this.isLoggedIn = event;
   }
 }

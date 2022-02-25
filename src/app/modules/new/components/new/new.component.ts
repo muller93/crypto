@@ -51,15 +51,15 @@ export class NewComponent implements OnInit {
       });
   }
 
-  save() {
+  save(): void {
     this.dialogRef.close({ data: this.selectedCrypto });
   }
 
-  cancel() {
+  cancel(): void {
     this.dialogRef.close();
   }
 
-  handleSelectedCrypto(event) {
+  handleSelectedCrypto(event): void {
     this.selectedCrypto = event.option.value;
   }
 }

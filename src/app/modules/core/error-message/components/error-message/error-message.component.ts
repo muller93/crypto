@@ -13,7 +13,7 @@ export class ErrorMessageComponent {
   }
   constructor(private _snackBar: MatSnackBar) {}
 
-  openSnackBar(message: string) {
+  openSnackBar(message: string): void {
     this._snackBar.open(message, 'X');
   }
 }

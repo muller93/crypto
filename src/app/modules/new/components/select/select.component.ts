@@ -36,7 +36,7 @@ export class SelectComponent implements OnInit {
     return crypto && crypto.name ? crypto.name : '';
   }
 
-  onSelectionChange(event: CryptoDetail) {
+  onSelectionChange(event: CryptoDetail): void {
     this.selectedCrypto.emit(event);
   }
 }
