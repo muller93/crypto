@@ -47,11 +47,13 @@ export class CryptoService {
     });
   }
 
-  getTabs(): Observable<CryptoDetail[]> {
-    return of(
-      JSON.parse(localStorage.getItem('tabs'))?.filter(
-        (tab) => tab.userName === this.getLoggedInUser().userName
-      )
+  getTabs(): Observable<Tab[]> {
+    return of(this._getTabs());
+  }
+
+  private _getTabs(): Tab[] {
+    return JSON.parse(localStorage.getItem('tabs'))?.filter(
+      (tab) => tab.userName === this.getLoggedInUser().userName
     );
   }
 
@@ -87,7 +89,7 @@ export class CryptoService {
   }
 
   addTab(newTab: Tab): void {
-    const currentTabs: Tab[] = JSON.parse(localStorage.getItem('tabs'));
+    const currentTabs: Tab[] = this._getTabs();
     const stringifiedTabs = JSON.stringify(
       currentTabs
         ? [
@@ -110,11 +112,10 @@ export class CryptoService {
   }
 
   deleteTab(selectedTabName: string): void {
-    const currentTabs: Tab[] = JSON.parse(localStorage.getItem('tabs'));
     localStorage.setItem(
       'tabs',
       JSON.stringify(
-        currentTabs.filter(
+        this._getTabs().filter(
           (value) =>
             value.asset_id !== selectedTabName ||
             value.userName !== this.getLoggedInUser().userName

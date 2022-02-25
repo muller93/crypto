@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { catchError, of } from 'rxjs';
 import { List } from 'src/app/model/list.interface';
+import { Tab } from 'src/app/model/tab.inferface';
 import { CryptoService } from 'src/app/service/crypto/crypto.service';
 import { ErrorMessageService } from 'src/app/service/error-message/error-message.service';
 import { isPresent } from 'src/app/utils/is-present';
@@ -12,7 +13,7 @@ import { isPresent } from 'src/app/utils/is-present';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  providers: [ErrorMessageService]
+  providers: [ErrorMessageService],
 })
 export class ListComponent implements OnInit {
   displayedColumns = ['coin', 'price_low', 'price_high'];
@@ -31,7 +32,7 @@ export class ListComponent implements OnInit {
         untilDestroyed(this),
         catchError((err) => {
           this._errorMessageService.openSnackBar(err);
-          return of<List[]>([]);
+          return of<Tab[]>([]);
         })
       )
       .subscribe((tabs) => {

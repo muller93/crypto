@@ -5,6 +5,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { catchError, forkJoin, of, startWith } from 'rxjs';
 import { CryptoDetail } from 'src/app/model/crypto-details.interface';
 import { ErrorMessageService } from 'src/app/service/error-message/error-message.service';
+import { Tab } from 'src/app/model/tab.inferface';
 
 @UntilDestroy()
 @Component({
@@ -35,7 +36,7 @@ export class NewComponent implements OnInit {
         startWith([]),
         catchError((err) => {
           this._errorMessageService.openSnackBar(err);
-          return of<CryptoDetail[]>([]);
+          return of<Tab[]>([]);
         })
       ),
     ])
