@@ -11,7 +11,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import {ScrollingModule} from '@angular/cdk/scrolling';
-import { ErrorMessageModule } from '../core/error-message/error-message.module';
 
 @NgModule({
   declarations: [NewComponent, SelectComponent],
@@ -27,8 +26,7 @@ import { ErrorMessageModule } from '../core/error-message/error-message.module';
     MatButtonModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
-    ScrollingModule,
-    ErrorMessageModule
+    ScrollingModule
   ],
 })
 export class NewModule {}

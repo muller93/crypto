@@ -18,7 +18,7 @@ export class LoginComponent {
     password: this.passwordControl,
   });
 
-  login(): void {
+  login() {
     const users = JSON.parse(localStorage.getItem('users'));
     const loginUser = users?.find(
       (user) => user.userName === this.userNameControl.value

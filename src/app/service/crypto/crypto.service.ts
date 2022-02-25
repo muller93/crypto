@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { CryptoDetail } from '../model/crypto-details.interface';
-import { Tab } from '../model/tab.inferface';
+import { CryptoDetail } from '../../model/crypto-details.interface';
+import { Tab } from '../../model/tab.inferface';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { convertDateToString } from '../utils/date-ot-string';
-import { GetChart } from '../model/get-chart.interface';
-import { User } from '../model/user.interface';
+import { convertDateToString } from '../../utils/date-ot-string';
+import { GetChart } from '../../model/get-chart.interface';
+import { User } from '../../model/user.interface';
 @Injectable()
 export class CryptoService {
    private _apiKey = 'B282AA63-91E4-417B-8A8F-44C2EE8F075E';

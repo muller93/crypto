@@ -7,7 +7,6 @@ import { ListModule } from '../list/list.module';
 import { ChartModule } from '../chart/chart.module';
 import { ExchangeModule } from '../exchange/exchange.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { CoreModule } from '../core/core.module';
 
 @NgModule({
   declarations: [TabComponent],
@@ -20,7 +19,6 @@ import { CoreModule } from '../core/core.module';
     ChartModule,
     ExchangeModule,
     MatDialogModule,
-    CoreModule,
   ],
 })
 export class TabModule {}

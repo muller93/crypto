@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { switchMap, catchError, of, BehaviorSubject, filter } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { CryptoService } from 'src/app/service/crypto.service';
+import { CryptoService } from 'src/app/service/crypto/crypto.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewComponent } from 'src/app/modules/new/components/new/new.component';
 import { Tab } from 'src/app/model/tab.inferface';
@@ -17,14 +17,14 @@ import { isPresent } from 'src/app/utils/is-present';
 import { Chart } from 'src/app/model/chart.interface';
 import { CryptoDetail } from 'src/app/model/crypto-details.interface';
 import { GetChart } from 'src/app/model/get-chart.interface';
-import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorMessageService } from 'src/app/service/error-message/error-message.service';
 
 @UntilDestroy()
 @Component({
   selector: 'app-tab',
   templateUrl: './tab.component.html',
   styleUrls: ['./tab.component.scss'],
-  providers: [CryptoService, MatDialog],
+  providers: [CryptoService, MatDialog, ErrorMessageService],
 })
 export class TabComponent implements OnInit, AfterViewInit {
   @ViewChild('tab') tab;
@@ -32,7 +32,6 @@ export class TabComponent implements OnInit, AfterViewInit {
   private _refreshList$ = new BehaviorSubject<void>(null);
   selectedTabName$ = new BehaviorSubject<string>(null);
 
-  error: HttpErrorResponse;
   tabs: Tab[];
   cryptoChart: Chart[];
   cryptoDetails: CryptoDetail[];
@@ -41,7 +40,8 @@ export class TabComponent implements OnInit, AfterViewInit {
   constructor(
     private _cryptoService: CryptoService,
     private _dialog: MatDialog,
-    private _cdr: ChangeDetectorRef
+    private _cdr: ChangeDetectorRef,
+    private _errorMessageService: ErrorMessageService
   ) {}
 
   ngAfterViewInit() {
@@ -62,7 +62,7 @@ export class TabComponent implements OnInit, AfterViewInit {
         switchMap(() =>
           this._cryptoService.getTabs().pipe(
             catchError((err) => {
-              this.error = err;
+              this._errorMessageService.openSnackBar(err);
               return of<Tab[]>([]);
             })
           )
@@ -82,7 +82,7 @@ export class TabComponent implements OnInit, AfterViewInit {
             .getCryptoDetails(this.tabs?.map((tab) => tab.asset_id))
             .pipe(
               catchError((err) => {
-                this.error = err;
+                this._errorMessageService.openSnackBar(err);
                 return of<Tab[]>([]);
               })
             )
@@ -107,7 +107,7 @@ export class TabComponent implements OnInit, AfterViewInit {
           .getCryptoChart(tabName)
           .pipe(
             catchError((err) => {
-              this.error = err;
+              this._errorMessageService.openSnackBar(err);
               return of<GetChart[]>([]);
             }),
             untilDestroyed(this)

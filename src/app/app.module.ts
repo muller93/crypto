@@ -7,7 +7,8 @@ import { NewModule } from './modules/new/new.module';
 import { TabModule } from './modules/tab/tab.module';
 import { ListModule } from './modules/list/list.module';
 import { CommonModule } from '@angular/common';
-import { CoreModule } from './modules/core/core.module';
+import { LoginModule } from './modules/login/login.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,7 +20,8 @@ import { CoreModule } from './modules/core/core.module';
     ListModule,
     NewModule,
     TabModule,
-    CoreModule
+    LoginModule,
+    MatSnackBarModule,
   ],
   bootstrap: [AppComponent],
 })

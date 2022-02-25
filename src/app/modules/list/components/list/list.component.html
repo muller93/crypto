@@ -9,7 +9,6 @@
             | lowercase
         "
       />
-      <img />
       <span>{{ element.coin }} </span>
     </mat-cell>
   </ng-container>
@@ -41,4 +40,3 @@
   ></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 </mat-table>
-<app-error-message [error]="error"></app-error-message>
