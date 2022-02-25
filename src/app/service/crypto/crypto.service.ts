@@ -7,13 +7,9 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { convertDateToString } from '../../utils/date-ot-string';
 import { GetChart } from '../../model/get-chart.interface';
 import { User } from '../../model/user.interface';
+import { environment } from 'src/environments/environment';
 @Injectable()
 export class CryptoService {
-   private _apiKey = 'B282AA63-91E4-417B-8A8F-44C2EE8F075E';
-  // private _apiKey = 'D04B1E7E-28D2-4762-903B-39410A5AC784';
-  // private _apiKey = '62C27950-1D5F-427F-818F-7328FB4CBC41';
-  // private _apiKey = 'C4CD1627-E669-49DC-8A32-E68EFB96F7E9';
-  private _apiUrl = 'https://rest.coinapi.io/v1';
   connection$: WebSocketSubject<any>;
 
   constructor(private _http: HttpClient) {}
@@ -33,7 +29,7 @@ export class CryptoService {
     if (this.connection$) {
       this.connection$.next({
         type: 'hello',
-        apikey: this._apiKey,
+        apikey: environment.apiKey,
         heartbeat: false,
         subscribe_data_type: ['ohlcv'],
         subscribe_filter_asset_id: tabs,
@@ -46,26 +42,23 @@ export class CryptoService {
 
   getAllCrypto(): Observable<CryptoDetail[]> {
     // return of(cryptos);
-    return this._http.get<CryptoDetail[]>(`${this._apiUrl}/assets`, {
-      params: { apikey: this._apiKey },
+    return this._http.get<CryptoDetail[]>(`${environment.apiUrl}/assets`, {
+      params: { apikey: environment.apiKey },
     });
   }
 
   getTabs(): Observable<CryptoDetail[]> {
-    const loggedInUserName = JSON.parse(
-      localStorage.getItem('loggedInUser')
-    ).userName;
     return of(
       JSON.parse(localStorage.getItem('tabs'))?.filter(
-        (tab) => tab.userName === loggedInUserName
+        (tab) => tab.userName === this.getLoggedInUser().userName
       )
     );
   }
 
   getCryptoDetails(assetIds: string[]): Observable<CryptoDetail[]> {
     // return of(cryptos);
-    return this._http.get<CryptoDetail[]>(`${this._apiUrl}/assets/`, {
-      params: { apikey: this._apiKey, filter_asset_id: assetIds?.join() },
+    return this._http.get<CryptoDetail[]>(`${environment.apiUrl}/assets/`, {
+      params: { apikey: environment.apiKey, filter_asset_id: assetIds?.join() },
     });
   }
 
@@ -79,12 +72,12 @@ export class CryptoService {
     );
     return this._http.get<GetChart[]>(
       `${
-        this._apiUrl
-      }/ohlcv/BITSTAMP_SPOT_${cryptoName}_USD/history?period_id=1DAY&time_start=${convertDateToString(
+        environment.apiUrl
+      }/ohlcv/BINANCE_SPOT_${cryptoName}_USDT/history?period_id=1DAY&time_start=${convertDateToString(
         from
       )}&time_end=${convertDateToString(today)}`,
       {
-        params: { apikey: this._apiKey },
+        params: { apikey: environment.apiKey },
       }
     );
   }
