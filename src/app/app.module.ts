@@ -7,7 +7,7 @@ import { TabModule } from './modules/tab/tab.module';
 import { CommonModule } from '@angular/common';
 import { LoginModule } from './modules/login/login.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { CryptoInterceptor } from './crypto-interceptor.interceptor';
+import { ApiKeyInterceptor } from './api-key.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +22,7 @@ import { CryptoInterceptor } from './crypto-interceptor.interceptor';
   ],
   bootstrap: [AppComponent],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: CryptoInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ApiKeyInterceptor, multi: true },
   ],
 })
 export class AppModule {}

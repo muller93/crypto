@@ -1,6 +1,6 @@
 <div class="ms-3">
-  <p class="my-3" *ngIf="usdPrice">1 {{ selectedTabName }} = {{ usdPrice }} USD</p>
-  <div>
+  <p *ngIf="usdPrice">1 {{ selectedTabName }} = {{ usdPrice }} USD</p>
+  <div class="mt-2">
     <mat-form-field>
       <input
         type="number"

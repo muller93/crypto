@@ -15,11 +15,9 @@ export class CryptoService {
   constructor(private _http: HttpClient) {}
 
   connect(tabs: string[]): Observable<any> {
-    if (this.connection$) {
-      this._send(tabs);
-      return this.connection$;
-    } else {
+    if (!this.connection$) {
       this.connection$ = webSocket('wss://ws-sandbox.coinapi.io/v1/');
+    } else {
       this._send(tabs);
       return this.connection$;
     }
@@ -84,25 +82,14 @@ export class CryptoService {
   }
 
   addTab(newTab: Tab): void {
-    const currentTabs: Tab[] = this._getTabs();
-    const stringifiedTabs = JSON.stringify(
-      currentTabs
-        ? [
-            ...currentTabs,
-            {
-              asset_id: newTab.asset_id,
-              name: newTab.name,
-              userName: this.getLoggedInUser().userName,
-            },
-          ]
-        : [
-            {
-              asset_id: newTab.asset_id,
-              name: newTab.name,
-              userName: this.getLoggedInUser().userName,
-            },
-          ]
-    );
+    const currentTabs = [
+      ...(this._getTabs() ?? []),
+      {
+        ...newTab,
+        userName: this.getLoggedInUser().userName,
+      },
+    ];
+    const stringifiedTabs = JSON.stringify(currentTabs);
     localStorage.setItem('tabs', stringifiedTabs);
   }
 

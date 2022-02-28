@@ -6,8 +6,7 @@ import { isString } from 'src/app/utils/is-string';
 
 @Component({
   selector: 'app-select',
-  templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss'],
+  templateUrl: './select.component.html'
 })
 export class SelectComponent implements OnInit {
   @Output() selectedCrypto = new EventEmitter<CryptoDetail>();

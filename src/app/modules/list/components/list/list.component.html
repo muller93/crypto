@@ -3,7 +3,7 @@
     <mat-header-cell *matHeaderCellDef>Coin</mat-header-cell>
     <mat-cell *matCellDef="let element">
       <img
-        class="crypto-icon me-2"
+        class="crypto-icon pe-3"
         [src]="
           'https://cryptoicon-api.vercel.app/api/icon/' + element.coin
             | lowercase
@@ -36,7 +36,6 @@
   </ng-container>
   <mat-header-row
     *matHeaderRowDef="displayedColumns; sticky: true"
-    class="compact"
   ></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 </mat-table>
