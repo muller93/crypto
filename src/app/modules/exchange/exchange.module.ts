@@ -1,13 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { SharedModule } from '../shared/shared.module';
 import { ExchangeComponent } from './components/exchange/exchange.component';
 
 @NgModule({
   declarations: [ExchangeComponent],
   exports: [ExchangeComponent],
-  imports: [MatFormFieldModule, ReactiveFormsModule, MatInputModule, CommonModule],
+  imports: [SharedModule],
 })
 export class ExchangeModule {}

@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { ListComponent } from './components/list/list.component';
 import { MatTableModule } from '@angular/material/table';
-import { CommonModule } from '@angular/common';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [ListComponent],
-  imports: [MatTableModule, CommonModule, MatProgressSpinnerModule],
+  imports: [MatTableModule, SharedModule],
   exports: [ListComponent],
 })
 export class ListModule {}
