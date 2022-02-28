@@ -42,9 +42,7 @@ export class CryptoService {
 
   getAllCrypto(): Observable<CryptoDetail[]> {
     // return of(cryptos);
-    return this._http.get<CryptoDetail[]>(`${environment.apiUrl}/assets`, {
-      params: { apikey: environment.apiKey },
-    });
+    return this._http.get<CryptoDetail[]>(`${environment.apiUrl}/assets`);
   }
 
   getTabs(): Observable<Tab[]> {
@@ -60,7 +58,7 @@ export class CryptoService {
   getCryptoDetails(assetIds: string[]): Observable<CryptoDetail[]> {
     // return of(cryptos);
     return this._http.get<CryptoDetail[]>(`${environment.apiUrl}/assets/`, {
-      params: { apikey: environment.apiKey, filter_asset_id: assetIds?.join() },
+      params: { filter_asset_id: assetIds?.join() },
     });
   }
 
@@ -77,10 +75,7 @@ export class CryptoService {
         environment.apiUrl
       }/ohlcv/BINANCE_SPOT_${cryptoName}_USDT/history?period_id=1DAY&time_start=${convertDateToString(
         from
-      )}&time_end=${convertDateToString(today)}`,
-      {
-        params: { apikey: environment.apiKey },
-      }
+      )}&time_end=${convertDateToString(today)}`
     );
   }
 
