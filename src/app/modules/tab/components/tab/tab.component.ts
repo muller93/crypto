@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { switchMap, catchError, of, BehaviorSubject, filter } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { CryptoService } from 'src/app/service/crypto/crypto.service';
 import { MatDialog } from '@angular/material/dialog';
 import { NewComponent } from 'src/app/modules/new/components/new/new.component';
 import { Tab } from 'src/app/model/tab.inferface';
@@ -17,7 +16,8 @@ import { isPresent } from 'src/app/utils/is-present';
 import { Chart } from 'src/app/model/chart.interface';
 import { CryptoDetail } from 'src/app/model/crypto-details.interface';
 import { GetChart } from 'src/app/model/get-chart.interface';
-import { ErrorMessageService } from 'src/app/service/error-message/error-message.service';
+import { ErrorMessageService } from 'src/app/core/service/error-message.service';
+import { CryptoService } from 'src/app/shared/service/crypto/crypto.service';
 
 @UntilDestroy()
 @Component({
@@ -67,58 +67,47 @@ export class TabComponent implements OnInit, AfterViewInit {
             })
           )
         ),
-        untilDestroyed(this)
-      )
-      .subscribe((tabs) => {
-        this.tabs = tabs as Tab[];
-        this._cdr.detectChanges();
-        this.loading = false;
-      });
-
-    this._refreshList$
-      .pipe(
-        switchMap(() =>
-          this._cryptoService
+        switchMap((tabs) => {
+          this.tabs = tabs as Tab[];
+          return this._cryptoService
             .getCryptoDetails(this.tabs?.map((tab) => tab.asset_id))
             .pipe(
               catchError((err) => {
                 this._errorMessageService.openSnackBar(err);
-                return of<Tab[]>([]);
+                return of<CryptoDetail[]>([]);
               })
-            )
-        ),
-        untilDestroyed(this)
+            );
+        })
       )
       .subscribe((cryptoDetails) => {
-        this.cryptoDetails = cryptoDetails as CryptoDetail[];
+        this.cryptoDetails = cryptoDetails;
         this.selectedTabUsdPrice = this.cryptoDetails.find(
           (x) => x.asset_id === this.selectedTabName$.value
         )?.price_usd;
         this._cdr.detectChanges();
+        this.loading = false;
       });
 
     this.selectedTabName$
       .pipe(
         filter((x) => isPresent(x) && x !== ''),
-        untilDestroyed(this)
-      )
-      .subscribe((tabName) => {
-        this._cryptoService
-          .getCryptoChart(tabName)
-          .pipe(
+        untilDestroyed(this),
+        switchMap((tabName) =>
+          this._cryptoService.getCryptoChart(tabName).pipe(
             catchError((err) => {
               this._errorMessageService.openSnackBar(err);
               return of<GetChart[]>([]);
             }),
             untilDestroyed(this)
           )
-          .subscribe((cryptoChart: GetChart[]) => {
-            this.cryptoChart = cryptoChart.map((detail) => ({
-              name: new Date(detail.time_period_end),
-              value: detail.price_close,
-            }));
-            this._cdr.detectChanges();
-          });
+        )
+      )
+      .subscribe((cryptoChart: GetChart[]) => {
+        this.cryptoChart = cryptoChart.map((detail) => ({
+          name: new Date(detail.time_period_end),
+          value: detail.price_close,
+        }));
+        this._cdr.detectChanges();
       });
   }
 

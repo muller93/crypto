@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { CryptoService } from 'src/app/service/crypto/crypto.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { catchError, forkJoin, of, startWith } from 'rxjs';
+import { ErrorMessageService } from 'src/app/core/service/error-message.service';
 import { CryptoDetail } from 'src/app/model/crypto-details.interface';
-import { ErrorMessageService } from 'src/app/service/error-message/error-message.service';
 import { Tab } from 'src/app/model/tab.inferface';
+import { CryptoService } from 'src/app/shared/service/crypto/crypto.service';
 
 @UntilDestroy()
 @Component({

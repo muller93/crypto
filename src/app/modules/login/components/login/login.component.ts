@@ -1,10 +1,15 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AuthService } from 'src/app/core/service/auth.service';
+import { isPresent } from 'src/app/utils/is-present';
 
+@UntilDestroy()
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  providers: [AuthService],
 })
 export class LoginComponent {
   @Output() setLogin = new EventEmitter<boolean>();
@@ -18,25 +23,32 @@ export class LoginComponent {
     password: this.passwordControl,
   });
 
+  constructor(private _authService: AuthService) {}
+
   login() {
-    const users = JSON.parse(localStorage.getItem('users'));
-    const loginUser = users?.find(
-      (user) => user.userName === this.userNameControl.value
-    );
-    if (loginUser) {
-      if (loginUser.password === this.passwordControl.value) {
-        localStorage.setItem('loggedInUser', JSON.stringify(loginUser));
-        this.setLogin.emit(true);
-      } else {
-        this.showPasswordError = true;
-      }
-    } else {
-      const stringifiedUsers = JSON.stringify(
-        users ? [...users, this.form.value] : [this.form.value]
-      );
-      localStorage.setItem('users', stringifiedUsers);
-      localStorage.setItem('loggedInUser', JSON.stringify(this.form.value));
-      this.setLogin.emit(true);
-    }
+    this._authService
+      .getUsers()
+      .pipe(untilDestroyed(this))
+      .subscribe((users) => {
+        const registeredUser = users?.find(
+          (user) => user.userName === this.userNameControl.value
+        );
+        if (isPresent(registeredUser)) {
+          if (registeredUser.password === this.passwordControl.value) {
+            this._authService.setLoggedInUser(registeredUser);
+            this.setLogin.emit(true);
+          } else {
+            this.showPasswordError = true;
+          }
+        } else {
+          const stringifiedUsers = JSON.stringify([
+            ...(users ?? []),
+            this.form.value,
+          ]);
+          this._authService.setUsers(stringifiedUsers)
+          this._authService.setLoggedInUser(this.form.value)
+          this.setLogin.emit(true);
+        }
+      });
   }
 }

@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { CryptoDetail } from '../../model/crypto-details.interface';
-import { Tab } from '../../model/tab.inferface';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { convertDateToString } from '../../utils/date-ot-string';
-import { GetChart } from '../../model/get-chart.interface';
-import { User } from '../../model/user.interface';
+import { CryptoDetail } from 'src/app/model/crypto-details.interface';
+import { GetChart } from 'src/app/model/get-chart.interface';
+import { Tab } from 'src/app/model/tab.inferface';
+import { User } from 'src/app/model/user.interface';
+import { convertDateToString } from 'src/app/utils/date-ot-string';
 import { environment } from 'src/environments/environment';
 @Injectable()
 export class CryptoService {
@@ -17,10 +17,9 @@ export class CryptoService {
   connect(tabs: string[]): Observable<any> {
     if (!this.connection$) {
       this.connection$ = webSocket('wss://ws-sandbox.coinapi.io/v1/');
-    } else {
-      this._send(tabs);
-      return this.connection$;
     }
+    this._send(tabs);
+    return this.connection$;
   }
 
   private _send(tabs: string[]): void {

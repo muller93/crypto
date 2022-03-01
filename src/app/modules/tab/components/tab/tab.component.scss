@@ -2,7 +2,7 @@
   margin-bottom: 20px;
 }
 
-::ng-deep .mat-tab-label-content {
+:host ::ng-deep .mat-tab-label-content {
   width: 100%;
   height: 100%;
 }

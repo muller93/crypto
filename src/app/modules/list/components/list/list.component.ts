@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { catchError, of } from 'rxjs';
+import { ErrorMessageService } from 'src/app/core/service/error-message.service';
 import { List } from 'src/app/model/list.interface';
 import { Tab } from 'src/app/model/tab.inferface';
-import { CryptoService } from 'src/app/service/crypto/crypto.service';
-import { ErrorMessageService } from 'src/app/service/error-message/error-message.service';
+import { CryptoService } from 'src/app/shared/service/crypto/crypto.service';
 import { isPresent } from 'src/app/utils/is-present';
 
 @UntilDestroy()

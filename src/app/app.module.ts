@@ -7,7 +7,7 @@ import { TabModule } from './modules/tab/tab.module';
 import { CommonModule } from '@angular/common';
 import { LoginModule } from './modules/login/login.module';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ApiKeyInterceptor } from './api-key.interceptor';
+import { ApiKeyInterceptor } from './core/interceptor/api-key.interceptor';
 
 @NgModule({
   declarations: [AppComponent],

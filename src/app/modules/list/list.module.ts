@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { ListComponent } from './components/list/list.component';
 import { MatTableModule } from '@angular/material/table';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { ListComponent } from './components/list/list.component';
 
 @NgModule({
   declarations: [ListComponent],
