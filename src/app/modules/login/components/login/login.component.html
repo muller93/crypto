@@ -2,17 +2,21 @@
   <div class="form">
     <form class="login-form">
       <input
+        id="userNameInput"
         type="text"
         placeholder="Username"
         [formControl]="userNameControl"
       />
       <input
+        id="passwordInput"
         type="password"
         placeholder="Password"
         [formControl]="passwordControl"
       />
       <p class="error" *ngIf="showPasswordError">Your password is incorrect</p>
-      <button id="login-btn" type="button" class="success" (click)="login()">login</button>
+      <button id="login-btn" type="button" class="success" (click)="login()">
+        login
+      </button>
     </form>
   </div>
 </div>

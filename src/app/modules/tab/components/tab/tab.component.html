@@ -17,6 +17,7 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <span
+          id="addNewTab"
           class="w-100 h-100 d-flex justify-content-center align-items-center"
           (click)="addNew()"
           >+</span
@@ -24,10 +25,7 @@
       </ng-template>
     </mat-tab>
   </mat-tab-group>
-  <span
-    class="material-icons cursor-pointer pe-3 mt-2"
-    (click)="setLogin.emit(false)"
-  >
+  <span class="material-icons cursor-pointer pe-3 mt-2" (click)="logout()">
     logout
   </span>
 </div>

@@ -18,6 +18,7 @@ import { CryptoDetail } from 'src/app/model/crypto-details.interface';
 import { GetChart } from 'src/app/model/get-chart.interface';
 import { ErrorMessageService } from 'src/app/core/service/error-message.service';
 import { CryptoService } from 'src/app/shared/service/crypto/crypto.service';
+import { AuthService } from 'src/app/core/service/auth.service';
 
 @UntilDestroy()
 @Component({
@@ -41,6 +42,7 @@ export class TabComponent implements OnInit, AfterViewInit {
     private _cryptoService: CryptoService,
     private _dialog: MatDialog,
     private _cdr: ChangeDetectorRef,
+    private _authService: AuthService,
     private _errorMessageService: ErrorMessageService
   ) {}
 
@@ -130,5 +132,10 @@ export class TabComponent implements OnInit, AfterViewInit {
     this._cryptoService.deleteTab(this.selectedTabName$.value);
     this._refreshList$.next();
     this.selectedTabName$.next(null);
+  }
+
+  logout(): void {
+    this._authService.logout();
+    this.setLogin.emit(false);
   }
 }

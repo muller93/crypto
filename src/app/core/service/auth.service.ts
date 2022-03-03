@@ -5,7 +5,7 @@ import { User } from 'src/app/model/user.interface';
 @Injectable()
 export class AuthService {
   getLoginData(): Observable<User> {
-    return of(JSON.parse(localStorage.getItem('loginData')));
+    return of(JSON.parse(localStorage.getItem('loggedInUser')));
   }
 
   getUsers(): Observable<User[]> {
@@ -14,6 +14,10 @@ export class AuthService {
 
   setLoggedInUser(user: User): void {
     localStorage.setItem('loggedInUser', JSON.stringify(user));
+  }
+
+  logout(): void {
+    localStorage.removeItem('loggedInUser');
   }
 
   setUsers(users: string): void {
