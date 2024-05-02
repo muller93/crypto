@@ -10,3 +10,16 @@
 mat-icon {
   color: red;
 }
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+
+  .chart {
+    min-width: 700px;
+  }
+
+  .details {
+    min-width: 400px;
+  }
+}
