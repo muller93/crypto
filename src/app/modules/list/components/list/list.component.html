@@ -2,13 +2,6 @@
   <ng-container matColumnDef="coin">
     <mat-header-cell *matHeaderCellDef>Coin</mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <img
-        class="crypto-icon pe-3"
-        [src]="
-          'https://coinicons-api.vercel.app/api/icon/' + element.coin
-            | lowercase
-        "
-      />
       <span>{{ element.coin }} </span>
     </mat-cell>
   </ng-container>

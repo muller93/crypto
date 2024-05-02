@@ -3,13 +3,6 @@
     <ng-container *ngFor="let tabData of tabs">
       <mat-tab #tab label="{{ tabData?.asset_id }}">
         <ng-template mat-tab-label>
-          <img
-            class="crypto-icon pe-3"
-            [src]="
-              'https://coinicons-api.vercel.app/api/icon/' + tabData?.asset_id
-                | lowercase
-            "
-          />
           <span>{{ tabData?.asset_id }}</span>
         </ng-template>
       </mat-tab>
@@ -36,7 +29,6 @@
     *ngIf="selectedTabName$ | async"
     class="mr-5 cursor-pointer"
     aria-hidden="false"
-    aria-label="Example home icon"
     (click)="deleteTab()"
     >delete</mat-icon
   >

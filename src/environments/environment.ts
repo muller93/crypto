@@ -5,9 +5,10 @@
 export const environment = {
   production: false,
   // apiKey: 'B282AA63-91E4-417B-8A8F-44C2EE8F075E',
-  apiKey: 'D04B1E7E-28D2-4762-903B-39410A5AC784',
+  // apiKey: 'D04B1E7E-28D2-4762-903B-39410A5AC784',
   // apiKey: '62C27950-1D5F-427F-818F-7328FB4CBC41',
   // apiKey: '784112E3-5C1D-4FCE-AC54-EAA0272107D5',
+  apiKey: 'C7E95BA9-8929-4230-B821-DE7CC4E552BF',
   apiUrl: 'https://rest.coinapi.io/v1',
 };
 

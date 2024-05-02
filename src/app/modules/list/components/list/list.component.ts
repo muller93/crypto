@@ -37,7 +37,7 @@ export class ListComponent implements OnInit {
       )
       .subscribe((tabs) => {
         this.dataSource.data = tabs?.map((tab) => ({
-          coin: tab.asset_id,
+          coin: tab.name,
           price_low: null,
           price_high: null,
         }));

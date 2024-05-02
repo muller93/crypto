@@ -30,15 +30,14 @@ export class CryptoService {
         heartbeat: false,
         subscribe_data_type: ['ohlcv'],
         subscribe_filter_asset_id: tabs,
-        subscribe_filter_period_id: ['1MIN'],
-      });
+        subscribe_filter_period_id: ['1DAY'],
+       });
     } else {
       console.error('Did not send data, open a connection first');
     }
   }
 
   getAllCrypto(): Observable<CryptoDetail[]> {
-    // return of(cryptos);
     return this._http.get<CryptoDetail[]>(`${environment.apiUrl}/assets`);
   }
 
@@ -53,14 +52,12 @@ export class CryptoService {
   }
 
   getCryptoDetails(assetIds: string[]): Observable<CryptoDetail[]> {
-    // return of(cryptos);
     return this._http.get<CryptoDetail[]>(`${environment.apiUrl}/assets/`, {
       params: { filter_asset_id: assetIds?.join() },
     });
   }
 
   getCryptoChart(cryptoName: string): Observable<GetChart[]> {
-    // return of(chartData);
     const today = new Date();
     const from = new Date(
       today.getFullYear(),

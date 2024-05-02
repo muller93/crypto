@@ -50,7 +50,9 @@ export class TabComponent implements OnInit, AfterViewInit {
   }
 
   tabChanged(tabChangeEvent): void {
-    this.selectedTabName$.next(tabChangeEvent?.tab.textLabel);
+    if (tabChangeEvent?.tab.textLabel) {
+      this.selectedTabName$.next(tabChangeEvent?.tab.textLabel);
+    }
     this.selectedTabUsdPrice = this.cryptoDetails.find(
       (x) => x.asset_id === this.selectedTabName$.value
     )?.price_usd;
