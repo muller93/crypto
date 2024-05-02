@@ -32,7 +32,7 @@ export class TabComponent implements OnInit, AfterViewInit {
   private _refreshList$ = new BehaviorSubject<void>(null);
   selectedTabName$ = new BehaviorSubject<string>(null);
 
-  tabs: Tab[];
+  tabs: Tab[] = [];
   cryptoChart: Chart[];
   cryptoDetails: CryptoDetail[];
   selectedTabUsdPrice: number;
@@ -80,6 +80,9 @@ export class TabComponent implements OnInit, AfterViewInit {
         })
       )
       .subscribe((cryptoDetails) => {
+        if (this.tabs?.length === 0) {
+          this.addNew();
+        }
         this.cryptoDetails = cryptoDetails;
         this.selectedTabUsdPrice = this.cryptoDetails.find(
           (x) => x.asset_id === this.selectedTabName$.value

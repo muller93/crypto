@@ -16,7 +16,7 @@ export class CryptoService {
 
   connect(tabs: string[]): Observable<any> {
     if (!this.connection$) {
-      this.connection$ = webSocket('wss://ws-sandbox.coinapi.io/v1/');
+      this.connection$ = webSocket('ws://ws.coinapi.io/v1/');
     }
     this._send(tabs);
     return this.connection$;
