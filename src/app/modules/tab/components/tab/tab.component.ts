@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -7,7 +6,13 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { switchMap, catchError, of, BehaviorSubject, filter } from 'rxjs';
+import {
+  switchMap,
+  catchError,
+  of,
+  BehaviorSubject,
+  filter,
+} from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MatDialog } from '@angular/material/dialog';
 import { NewComponent } from 'src/app/modules/new/components/new/new.component';
@@ -26,7 +31,7 @@ import { CryptoService } from 'src/app/shared/service/crypto/crypto.service';
   styleUrls: ['./tab.component.scss'],
   providers: [CryptoService, MatDialog, ErrorMessageService],
 })
-export class TabComponent implements OnInit, AfterViewInit {
+export class TabComponent implements OnInit {
   @ViewChild('tab') tab;
   @Output() setLogin = new EventEmitter<boolean>();
   private _refreshList$ = new BehaviorSubject<void>(null);
@@ -44,10 +49,6 @@ export class TabComponent implements OnInit, AfterViewInit {
     private _errorMessageService: ErrorMessageService
   ) {}
 
-  ngAfterViewInit() {
-    this.selectedTabName$.next(this.tab?.textLabel);
-    this._cdr.detectChanges();
-  }
 
   tabChanged(tabChangeEvent): void {
     if (tabChangeEvent?.tab.textLabel) {
@@ -90,6 +91,8 @@ export class TabComponent implements OnInit, AfterViewInit {
           (x) => x.asset_id === this.selectedTabName$.value
         )?.price_usd;
         this._cdr.detectChanges();
+
+        this.selectedTabName$.next(this.tab?.textLabel);
         this.loading = false;
       });
 
