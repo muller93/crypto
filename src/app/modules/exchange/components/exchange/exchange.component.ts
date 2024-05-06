@@ -11,9 +11,10 @@ export class ExchangeComponent implements OnInit {
   @Input() set setUsdPrice(usdPrice) {
     this.usdPrice = usdPrice;
     this.usdControl.setValue(usdPrice);
+    this.cryptoControl.setValue(1);
   }
-  @Input() set setSelectedTabName(value: string) {
-    this.selectedTabName = value;
+  @Input() set setSelectedTabName(tabName: string) {
+    this.selectedTabName = tabName;
   }
   selectedTabName: string;
   usdPrice: number;

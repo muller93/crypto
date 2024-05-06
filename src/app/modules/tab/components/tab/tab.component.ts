@@ -6,13 +6,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import {
-  switchMap,
-  catchError,
-  of,
-  BehaviorSubject,
-  filter,
-} from 'rxjs';
+import { switchMap, catchError, of, BehaviorSubject, filter } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MatDialog } from '@angular/material/dialog';
 import { NewComponent } from 'src/app/modules/new/components/new/new.component';
@@ -49,17 +43,46 @@ export class TabComponent implements OnInit {
     private _errorMessageService: ErrorMessageService
   ) {}
 
-
   tabChanged(tabChangeEvent): void {
     if (tabChangeEvent?.tab.textLabel) {
       this.selectedTabName$.next(tabChangeEvent?.tab.textLabel);
     }
+    this._getSelectedTabUsdPrice();
+  }
+
+  ngOnInit(): void {
+    this._refreshList();
+    this._setSelectedTabName();
+  }
+
+  addNew(): void {
+    const dialogRef = this._dialog.open(NewComponent);
+    dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe((result) => {
+        if (result) {
+          this.loading = true;
+          this._cryptoService.addTab(result.data);
+          this._refreshList$.next();
+        }
+      });
+  }
+
+  deleteTab(): void {
+    this.loading = true;
+    this._cryptoService.deleteTab(this.selectedTabName$.value);
+    this._refreshList$.next();
+    this.selectedTabName$.next(null);
+  }
+
+  private _getSelectedTabUsdPrice(): void {
     this.selectedTabUsdPrice = this.cryptoDetails.find(
       (x) => x.asset_id === this.selectedTabName$.value
     )?.price_usd;
   }
 
-  ngOnInit(): void {
+  private _refreshList(): void {
     this._refreshList$
       .pipe(
         switchMap(() =>
@@ -87,15 +110,16 @@ export class TabComponent implements OnInit {
           this.addNew();
         }
         this.cryptoDetails = cryptoDetails;
-        this.selectedTabUsdPrice = this.cryptoDetails.find(
-          (x) => x.asset_id === this.selectedTabName$.value
-        )?.price_usd;
         this._cdr.detectChanges();
 
         this.selectedTabName$.next(this.tab?.textLabel);
+        this._getSelectedTabUsdPrice();
+
         this.loading = false;
       });
+  }
 
+  private _setSelectedTabName(): void {
     this.selectedTabName$
       .pipe(
         filter((x) => isPresent(x) && x !== ''),
@@ -117,26 +141,5 @@ export class TabComponent implements OnInit {
         }));
         this._cdr.detectChanges();
       });
-  }
-
-  addNew(): void {
-    const dialogRef = this._dialog.open(NewComponent);
-    dialogRef
-      .afterClosed()
-      .pipe(untilDestroyed(this))
-      .subscribe((result) => {
-        if (result) {
-          this.loading = true;
-          this._cryptoService.addTab(result.data);
-          this._refreshList$.next();
-        }
-      });
-  }
-
-  deleteTab(): void {
-    this.loading = true;
-    this._cryptoService.deleteTab(this.selectedTabName$.value);
-    this._refreshList$.next();
-    this.selectedTabName$.next(null);
   }
 }
