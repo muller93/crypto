@@ -43,16 +43,16 @@ export class TabComponent implements OnInit {
     private _errorMessageService: ErrorMessageService
   ) {}
 
+  ngOnInit(): void {
+    this._refreshList();
+    this._setSelectedTabName();
+  }
+
   tabChanged(tabChangeEvent): void {
     if (tabChangeEvent?.tab.textLabel) {
       this.selectedTabName$.next(tabChangeEvent?.tab.textLabel);
     }
     this._getSelectedTabUsdPrice();
-  }
-
-  ngOnInit(): void {
-    this._refreshList();
-    this._setSelectedTabName();
   }
 
   addNew(): void {

@@ -37,7 +37,7 @@
   <div class="chart">
     <div class="w-100">
       <app-chart
-        *ngIf="cryptoChart"
+        *ngIf="cryptoChart && selectedTabName$ | async"
         class="d-flex"
         [setCryptoChart]="cryptoChart"
         [selectedTabName]="selectedTabName$ | async"
