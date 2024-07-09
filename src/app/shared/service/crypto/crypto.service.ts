@@ -6,7 +6,7 @@ import { CryptoDetail } from 'src/app/model/crypto-details.interface';
 import { GetChart } from 'src/app/model/get-chart.interface';
 import { Tab } from 'src/app/model/tab.inferface';
 import { User } from 'src/app/model/user.interface';
-import { convertDateToString } from 'src/app/utils/date-ot-string';
+import { convertDateToString } from 'src/app/utils/date-to-string';
 import { environment } from 'src/environments/environment';
 @Injectable()
 export class CryptoService {

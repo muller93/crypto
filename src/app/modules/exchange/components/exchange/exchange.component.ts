@@ -10,7 +10,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 export class ExchangeComponent implements OnInit {
   @Input() set setUsdPrice(usdPrice) {
     this.usdPrice = usdPrice;
-    this.usdControl.setValue(usdPrice.toFixed(4));
+    this.usdControl.setValue(usdPrice?.toFixed(4));
     this.cryptoControl.setValue(1);
   }
   @Input() set setSelectedTabName(tabName: string) {
